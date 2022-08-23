@@ -1,23 +1,44 @@
-# Progressive Web App Example
+# next-pwa - web push example
 
-This example uses [`next-pwa`](https://github.com/shadowwalker/next-pwa) to create a progressive web app (PWA) powered by [Workbox](https://developers.google.com/web/tools/workbox/).
+[TOC]
 
-## Deploy your own
+This example demonstrates how to use `next-pwa` plugin to implement web push with custom worker.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+**NOTE**
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/progressive-web-app&project-name=progressive-web-app&repository-name=progressive-web-app)
+In real world, you may want to send the subscription data to your server once user agree to subscribe web push. Store the data associate with the user. So that you can initiate a web push notification from your server to the specific users.
 
-## How to use
+## Usage
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+[![Open in Gitpod](https://img.shields.io/badge/Open%20In-Gitpod.io-%231966D2?style=for-the-badge&logo=gitpod)](https://gitpod.io/#https://github.com/shadowwalker/next-pwa/)
 
-```bash
-npx create-next-app --example progressive-web-app progressive-web-app
-# or
-yarn create next-app --example progressive-web-app progressive-web-app
-# or
-pnpm create next-app --example progressive-web-app progressive-web-app
+``` bash
+cd examples/web-push
+yarn install
+yarn vapid
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+Create a `.env` file, and put the public key generated from the previous steps
+
+```
+WEB_PUSH_EMAIL=user@example.com
+WEB_PUSH_PRIVATE_KEY=<vapid-private-key>
+NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY=<vapid-public-key>
+```
+
+Build and start
+
+``` bash
+yarn build
+yarn start
+```
+## Recommend `.gitignore`
+
+```
+**/public/workbox-*.js
+**/public/sw.js
+**/public/worker-*.js
+```
+
+
+
