@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "next",
+    "lint": "next lint",
     "build": "next build",
     "start": "next start",
     "vapid": "web-push generate-vapid-keys"
