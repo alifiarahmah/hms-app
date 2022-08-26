@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "next",
-    "lint": "next lint",
+    "lint": "npx prettier --write .",
     "build": "next build",
     "start": "next start",
     "vapid": "web-push generate-vapid-keys"
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "eslint": "^8.22.0",
-    "eslint-config-next": "12.2.5"
+    "eslint-config-next": "12.2.5",
+    "prettier": "2.7.1"
   }
 }
