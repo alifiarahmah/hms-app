@@ -1,23 +1,19 @@
-import { z } from 'zod';
+/*
+Contoh penggunaan
 
-export const ResSchema = z.object({
-  message: z.string(),
-  isError: z.boolean(),
-  data: z.any(),
-});
-export type ResType = z.infer<typeof ResSchema>;
+const res : ResType<LoginResType> = await axios...
 
-export const LoginResSchema = ResSchema.extend({
-  data: z
-    .object({
-      token: z.string(),
-      user: z.object({
-        id: z.string(),
-        nim: z.string(),
-        name: z.string(),
-        email: z.string(),
-      }),
-    })
-    .or(z.null()),
-});
-export type LoginResType = z.infer<typeof LoginResSchema>;
+*/
+export type ResType<T> = {
+  isError: boolean;
+  message: string;
+  data: T;
+};
+export type LoginResType = {
+  token: string;
+};
+export type TokenResType = {
+  nim: string;
+  name: string;
+  email: string;
+};
