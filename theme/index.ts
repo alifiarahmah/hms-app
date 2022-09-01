@@ -23,6 +23,22 @@ export const theme = extendTheme({
   },
   fonts: {
     heading: 'Livvic, sans-serif',
-    body: '"Harmattan", sans-serif',
+    body: '"Oceanside Typewriter", Harmattan, sans-serif',
+  },
+  styles: {
+    global: {
+      body: {
+        fontSize: '1.25rem',
+      },
+      h1: {
+        color: 'red',
+      },
+      h2: {
+        color: 'blue',
+      },
+      h3: {
+        color: 'green',
+      },
+    },
   },
 });
