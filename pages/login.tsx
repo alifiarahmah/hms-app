@@ -1,4 +1,5 @@
 import { Box, Button, Container, Input } from '@chakra-ui/react';
+import Link from 'components/link';
 
 const Login = () => {
   return (
@@ -8,7 +9,9 @@ const Login = () => {
         <form>
           <Input type="text" placeholder="email" />
           <Input type="password" placeholder="password" />
-          <Button>Login</Button>
+          <Link href="/">
+            <Button>Login</Button>
+          </Link>
         </form>
       </Container>
     </Box>
