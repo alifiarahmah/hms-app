@@ -1,7 +1,7 @@
-import Layout from "components/layout";
+import Layout from 'components/layout';
 
 const Index = () => {
-  return <Layout>welgam</Layout>;
+  return <Layout>Index</Layout>;
 };
 
 export default Index;

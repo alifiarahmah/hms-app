@@ -1,11 +1,7 @@
-import { Box, Button, Container, Input } from '@chakra-ui/react';
+import Layout from 'components/layout';
 
 const Blog = () => {
-  return (
-    <Box>
-      
-    </Box>
-  );
+  return <Layout>Blog</Layout>;
 };
 
 export default Blog;

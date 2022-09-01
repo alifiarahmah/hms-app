@@ -22,22 +22,24 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Livvic, sans-serif',
+    heading: 'Gurindam, Livvic, sans-serif',
     body: '"Oceanside Typewriter", Harmattan, sans-serif',
   },
   styles: {
     global: {
       body: {
         fontSize: '1.25rem',
+        bg: 'primary.100',
       },
-      h1: {
-        color: 'red',
-      },
-      h2: {
-        color: 'blue',
-      },
-      h3: {
-        color: 'green',
+      h1: {},
+      h2: {},
+      h3: {},
+    },
+  },
+  components: {
+    Container: {
+      baseStyle: {
+        maxWidth: 'container.xl',
       },
     },
   },
