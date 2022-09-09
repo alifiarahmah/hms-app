@@ -9,11 +9,16 @@ export type ResType<T> = {
   message: string;
   data: T;
 };
+
+// Public
 export type LoginResType = {
   token: string;
 };
+
+// User
 export type TokenResType = {
   nim: string;
   name: string;
   email: string;
 };
+

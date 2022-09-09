@@ -12,8 +12,8 @@ export class InvalidTokenError extends GeneralError {
   }
 }
 
-export class Unauthorized extends GeneralError {
+export class UnauthorizedError extends GeneralError {
   constructor() {
-    super('Unauthorized', 401);
+    super('Unauthorized', 403);
   }
 }
