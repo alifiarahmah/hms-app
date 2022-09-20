@@ -8,17 +8,27 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
-const BuildRoute = () => {
+type RouteFileType = 'single' | 'array';
+
+const BuildRoute = (routeFileType: RouteFileType = 'single') => {
   const route = nextConnect({
     onError(error, req, res) {
       const nextReq = req as NextApiRequest;
       const nextRes = res as NextApiResponse;
       ErrorHandler(() => {
+        console.log(error);
         throw error;
       })(nextReq, nextRes);
     },
   });
-  route.use(upload.array('file'));
+  switch (routeFileType) {
+    case 'single':
+      route.use(upload.single('file'));
+      break;
+    case 'array':
+      route.use(upload.array('files'));
+      break;
+  }
   return route;
 };
 

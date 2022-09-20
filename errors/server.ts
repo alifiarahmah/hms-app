@@ -15,3 +15,9 @@ export class InternalServerError extends GeneralError {
     }
   }
 }
+
+export class FileIsRequiredError extends GeneralError {
+  constructor() {
+    super('File is required', 400);
+  }
+}

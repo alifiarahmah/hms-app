@@ -1,21 +1,43 @@
-import { MethodNotAllowedError } from '@errors/server';
+import { FileIsRequiredError, InternalServerError, MethodNotAllowedError } from '@errors/server';
 import serialize from '@libs/server/serialize';
 import prisma from '@services/prisma';
-import { NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import BuildRoute from '@libs/server/nextConnect';
-import { IncomingMessage } from 'http';
+import { AsyncRoute } from '@libs/server/asyncWrapper';
+import { UploadPhotoSchema } from '@schemas/request';
+import { uploadFile } from '@services/drive';
 
-const PhotoRoute = BuildRoute();
+const PhotoRoute = BuildRoute('single');
 PhotoRoute.post(
-  (
-    req: IncomingMessage & {
-      files: any[];
-    },
-    res: NextApiResponse
-  ) => {
-    console.log(req.files);
-    res.json(serialize('Upload photo success', req.files));
-  }
+  AsyncRoute(
+    async (
+      req: NextApiRequest & {
+        file: Express.Multer.File;
+      },
+      res: NextApiResponse
+    ) => {
+      const { title, content } = UploadPhotoSchema.parse(req.body);
+      const { file } = req;
+      if (!file) throw new FileIsRequiredError();
+
+      const fileId = await uploadFile(
+        file,
+        process.env.IMAGE_FOLDER_ID,
+        title + '_' + Date.now().toString()
+      );
+
+      if (!fileId) throw new InternalServerError('Upload file error');
+      const photo = await prisma.image.create({
+        data: {
+          id: fileId,
+          title,
+          content,
+        },
+      });
+
+      res.json(serialize('Upload photo success', photo));
+    }
+  )
 );
 
 export default PhotoRoute;

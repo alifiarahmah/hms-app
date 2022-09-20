@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-export const LoginReqSchema = z.object({
-  nim: z.string(),
-  password: z.string(),
+export const UploadPhotoSchema = z.object({
+  title: z.string(),
+  content: z.string(),
 });
-export type LoginReqType = z.infer<typeof LoginReqSchema>;
+
+export type UploadPhotoReqType = z.infer<typeof UploadPhotoSchema>;

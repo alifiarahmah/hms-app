@@ -1,28 +1,44 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   title     String
   content   String
-  images    String[]
-  tags      String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  tags      Tag[]
+  images    ImagePost[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
-model Photo {
-  id        String   @id @default(cuid())
+model Tag {
+  name  String @id
+  posts Post[]
+}
+
+model ImagePost {
+  postId  String
+  imageId String
+  post    Post   @relation(fields: [postId], references: [id])
+  image   Image  @relation(fields: [imageId], references: [id])
+
+  @@id([postId, imageId])
+}
+
+model Image {
+  id        String      @id
   title     String
   content   String
-  image     String
-  createdAt DateTime @default(now())
+  ImagePost ImagePost[]
+  createdAt DateTime    @default(now())
 }
 
 model Account {
