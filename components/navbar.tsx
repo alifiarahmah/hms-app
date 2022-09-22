@@ -13,8 +13,9 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
-import Link from 'next/link';
 import { MdMenu } from 'react-icons/md';
+import Link from './link';
+import Login from './login';
 
 export const routes = [
   {
@@ -40,7 +41,9 @@ export const routes = [
 ];
 
 const Navbar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
+  const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+
   return (
     <>
       <Container
@@ -61,20 +64,22 @@ const Navbar = () => {
                 {r.label}
               </Link>
             ))}
-            <Button variant="outline">Login</Button>
+            <Button onClick={onModalOpen} variant="outline">
+              Login
+            </Button>
           </Stack>
         </Box>
         <IconButton
           variant="unstyled"
           size="lg"
-          onClick={onOpen}
+          onClick={onDrawerOpen}
           display={{ base: 'flex', lg: 'none' }}
           aria-label="Menu"
           icon={<MdMenu size="2rem" color="white" />}
         />
       </Container>
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <Drawer isOpen={isDrawerOpen} placement="right" onClose={onDrawerClose}>
         <DrawerOverlay />
         <DrawerContent bg="primary.500" color="white">
           <DrawerHeader my={5}>
@@ -88,11 +93,15 @@ const Navbar = () => {
                   {r.label}
                 </Link>
               ))}
-              <Button variant="outline">Login</Button>
+              <Button onClick={onModalOpen} variant="outline">
+                Login
+              </Button>
             </Stack>
           </DrawerBody>
         </DrawerContent>
       </Drawer>
+
+      <Login isOpen={isModalOpen} onOpen={onModalOpen} onClose={onModalClose} />
     </>
   );
 };
