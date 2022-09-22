@@ -26,12 +26,16 @@ export const routes = [
     label: 'About',
   },
   {
-    path: '/gallery',
-    label: 'Gallery',
+    path: '/calendar',
+    label: 'Kalender',
   },
   {
     path: '/mading',
     label: 'Mading',
+  },
+  {
+    path: '/gallery',
+    label: 'Gallery',
   },
 ];
 
