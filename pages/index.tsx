@@ -1,7 +1,7 @@
 import Layout from 'components/layout';
 
 const Index = () => {
-  return <Layout>Index</Layout>;
+  return <Layout>Welcome to HMSApp!</Layout>;
 };
 
 export default Index;
