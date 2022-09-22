@@ -21,3 +21,13 @@ export class FileIsRequiredError extends GeneralError {
     super('File is required', 400);
   }
 }
+
+export class BadRequestError extends GeneralError {
+  constructor(message?: string) {
+    if (message) {
+      super('Bad request: ' + message, 400);
+    } else {
+      super('Bad request', 400);
+    }
+  }
+}

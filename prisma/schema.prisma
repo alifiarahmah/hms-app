@@ -86,4 +86,5 @@ model CalendarEvent {
   title       String
   description String?
   rrule       String? // Stringified RRULE
+  meetingLink String?
 }

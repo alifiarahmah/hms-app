@@ -1,3 +1,4 @@
+import { BadRequestError } from '@errors/server';
 import ical from 'node-ical';
 import { RRule } from 'rrule';
 
@@ -17,7 +18,7 @@ const formatDate = (input: string) => {
 };
 
 const parseICS = (ics: string) => {
-  const data = Object.values(ical.sync.parseICS(ics))
+  const data: ical.VEvent[] = Object.values(ical.sync.parseICS(ics))
     .filter((item) => {
       return item.type === 'VEVENT';
     })
@@ -29,8 +30,9 @@ const parseICS = (ics: string) => {
         end: new Date(formatDate(event.end)),
       };
     });
+  if (data.length == 0) throw new BadRequestError('No event in ICS file');
 
-  return data as ical.VEvent[];
+  return data;
 };
 
 const parseRRule = (rrule: string) => {
