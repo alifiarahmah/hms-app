@@ -2,13 +2,14 @@ import { FileIsRequiredError, InternalServerError, MethodNotAllowedError } from 
 import serialize from '@libs/server/serialize';
 import prisma from '@services/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
-import BuildRoute from '@libs/server/nextConnect';
+import { BuildFileMiddleware, BuildRoute } from '@libs/server/nextConnect';
 import { AsyncRoute } from '@libs/server/asyncWrapper';
 import { UploadPhotoSchema } from '@schemas/request';
 import { uploadFile } from '@services/drive';
 
-const PhotoRoute = BuildRoute('single');
+const PhotoRoute = BuildRoute();
 PhotoRoute.post(
+  BuildFileMiddleware('single'),
   AsyncRoute(
     async (
       req: NextApiRequest & {
