@@ -78,3 +78,12 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model CalendarEvent {
+  uid         String   @id
+  start       DateTime
+  end         DateTime
+  title       String
+  description String?
+  rrule       String? // Stringified RRULE
+}

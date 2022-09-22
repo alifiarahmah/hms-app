@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "next",
+    "postinstall": "npx prisma generate",
     "lint": "npx prettier --write .",
     "build": "next build",
     "start": "next start",

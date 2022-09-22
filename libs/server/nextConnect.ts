@@ -1,7 +1,8 @@
-import nextConnect from 'next-connect';
+import nextConnect, { NextConnect } from 'next-connect';
 import multer from 'multer';
 import ErrorHandler from './errorHandler';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { IncomingMessage, ServerResponse } from 'http';
 
 // Next js sucks, so we port next js api using next connect then use multer
 const upload = multer({
@@ -10,7 +11,7 @@ const upload = multer({
 
 type RouteFileType = 'single' | 'array';
 
-const BuildRoute = (routeFileType: RouteFileType = 'single') => {
+const BuildRoute = () => {
   const route = nextConnect({
     onError(error, req, res) {
       const nextReq = req as NextApiRequest;
@@ -21,15 +22,16 @@ const BuildRoute = (routeFileType: RouteFileType = 'single') => {
       })(nextReq, nextRes);
     },
   });
-  switch (routeFileType) {
-    case 'single':
-      route.use(upload.single('file'));
-      break;
-    case 'array':
-      route.use(upload.array('files'));
-      break;
-  }
   return route;
 };
 
-export default BuildRoute;
+const BuildFileMiddleware = (routeFileType: RouteFileType) => {
+  switch (routeFileType) {
+    case 'single':
+      return upload.single('file');
+    case 'array':
+      return upload.array('files');
+  }
+};
+
+export { BuildRoute, BuildFileMiddleware };
