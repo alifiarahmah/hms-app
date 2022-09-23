@@ -61,14 +61,15 @@ model Account {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  nim           String    @unique
+  id            String             @id @default(cuid())
+  nim           String             @unique
   name          String
-  email         String    @unique
+  email         String             @unique
   password      String
   emailVerified DateTime?
   image         String?
   accounts      Account[]
+  subscriptions UserSubscription[]
 }
 
 model VerificationToken {
@@ -87,4 +88,16 @@ model CalendarEvent {
   description String?
   rrule       String? // Stringified RRULE
   meetingLink String?
+}
+
+model UserSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  endpoint  String   @db.Text
+  p256dh    String   @db.Text
+  auth      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, auth])
 }

@@ -7,7 +7,6 @@ import prisma from '@services/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const Calendar = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log(CalendarCache);
   if (CalendarCache.data.length > 0) {
     res.json(serialize('Success Cached Get Calendar', CalendarCache.data));
     return;

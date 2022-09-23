@@ -53,7 +53,6 @@ CalendarRoute.post(
             .replace(/-\:\:[^\s]*\:\:-/g, '')
             .replace('Please do not edit this section.', '')
             .replace(/(<.*>){2,3}/g, '\n');
-          console.log(res.description);
         }
         if (item.rrule) {
           res.rrule = item.rrule.toString();

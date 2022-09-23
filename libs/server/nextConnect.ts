@@ -17,7 +17,6 @@ const BuildRoute = () => {
       const nextReq = req as NextApiRequest;
       const nextRes = res as NextApiResponse;
       ErrorHandler(() => {
-        console.log(error);
         throw error;
       })(nextReq, nextRes);
     },
