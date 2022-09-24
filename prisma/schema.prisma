@@ -101,3 +101,11 @@ model UserSubscription {
 
   @@unique([userId, auth])
 }
+
+model ForgotPasswordToken {
+  userId  String
+  token   String   @unique @default(cuid())
+  expires DateTime
+
+  @@id([userId])
+}

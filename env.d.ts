@@ -10,5 +10,9 @@ declare namespace NodeJS {
     WEB_PUSH_EMAIL: string;
     NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY: string;
     WEB_PUSH_PRIVATE_KEY: string;
+    EMAIL_HOST: string;
+    EMAIL_PORT: string;
+    EMAIL_USERNAME: string;
+    EMAIL_PASSWORD: string;
   }
 }
