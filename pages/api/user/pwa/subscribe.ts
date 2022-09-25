@@ -3,6 +3,7 @@ import ErrorHandler from '@libs/server/errorHandler';
 import serialize from '@libs/server/serialize';
 import { UserSubscription } from '@prisma/client';
 import prisma from '@services/prisma';
+import { MD5 } from 'crypto-js';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 
@@ -23,16 +24,23 @@ const Subscribe = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse)
     throw new BadRequestError('Invalid request');
   }
 
+  const hash = MD5(subscription.endpoint).toString();
   const userSubscription = {
+    id: hash,
     endpoint: subscription.endpoint,
     p256dh: subscription.keys.p256dh,
     auth: subscription.keys.auth,
     userId: token.user.id,
   };
 
-  await prisma.userSubscription.createMany({
-    data: [userSubscription],
-    skipDuplicates: true,
+  await prisma.userSubscription.upsert({
+    where: {
+      id: hash,
+    },
+    update: {
+      userId: token.user.id,
+    },
+    create: userSubscription,
   });
 
   res.json(serialize('Subscribe success', token.user.id));
