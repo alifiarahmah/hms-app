@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   Flex,
   Heading,
@@ -14,30 +15,22 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from '@chakra-ui/react';
 import Sidebar from 'components/sidebar';
-import { SearchIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { SearchIcon, DeleteIcon, EditIcon, AddIcon } from '@chakra-ui/icons';
 import useWarning from 'components/warningModal';
-
-const dummyUserData = [
-  {
-    id: 'asdasdasd',
-    nim: '123456789',
-    name: 'John Doe',
-    email: 'johndoe@gmail.com',
-  },
-];
-for (let i = 0; i < 100; i++) {
-  dummyUserData.push({
-    id: `asdasdasd${i}`,
-    nim: '123456789',
-    name: 'John Doe',
-    email: 'johndoe@gmail.com',
-  });
-}
+import { User } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Loading from 'components/loading';
+import CreateUserModal from 'components/admin/createUserModal';
 
 const AdminUser = () => {
   const { warning, WarningModal } = useWarning();
+  const router = useRouter();
+  const [userData, setUserData] = useState<null | User[]>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleDelete = (id: string) => {
     warning({
@@ -50,21 +43,47 @@ const AdminUser = () => {
   };
 
   const handleEdit = (id: string) => {
-    console.log(id);
+    router.push(`/admin/user/${id}`);
   };
+
+  const handleCloseCreateUser = () => {
+    onClose();
+    router.reload();
+  };
+
+  useEffect(() => {
+    fetch('/api/admin/user')
+      .then((res) => res.json())
+      .then((data) => {
+        setUserData(data.data);
+      })
+      .catch((err) => {
+        router.push('/admin/user');
+      });
+  }, [router]);
+
+  if (!userData) {
+    return <Loading />;
+  }
 
   return (
     <>
+      <CreateUserModal isOpen={isOpen} onClose={handleCloseCreateUser} />
       <WarningModal />
       <Sidebar />
       <Flex ml="67.5px" maxH="100vh" gap={2} px={2} flexDir="column">
         <Flex maxH="15vh" gap={2} pt={4} flexDir="column" position="sticky">
-          <Flex gap={4}>
+          <Flex gap={8}>
             <Heading color="primary.500">Users</Heading>
-            <InputGroup borderColor="transparent" mt={2}>
+            <InputGroup borderColor="primary.500" mt={2}>
               <Input focusBorderColor="primary.500" />
-              <InputRightAddon bg="transparent" children={<SearchIcon />} />
+              <InputRightAddon bg="transparent">
+                <SearchIcon />
+              </InputRightAddon>
             </InputGroup>
+            <Button onClick={onOpen} mt={2} mr={4} colorScheme="primary" variant="link">
+              <AddIcon />
+            </Button>
           </Flex>
           <Divider borderColor="primary.500" />
         </Flex>
@@ -80,7 +99,7 @@ const AdminUser = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {dummyUserData.map((user) => (
+              {userData.map((user: User) => (
                 <Tr key={user.id}>
                   <Td>{user.nim}</Td>
                   <Td>{user.name}</Td>
