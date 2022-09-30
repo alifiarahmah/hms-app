@@ -1,4 +1,4 @@
-import { parseICS, parseRRule } from '@libs/calendar';
+import { parseICS } from '@libs/calendar';
 import { AsyncRoute } from '@libs/server/asyncWrapper';
 import { BuildFileMiddleware, BuildRoute } from '@libs/server/nextConnect';
 import serialize from '@libs/server/serialize';
