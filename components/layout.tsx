@@ -10,7 +10,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Navbar />
-      <Container as="main" p={{ base: 3, lg: 5 }}>
+      <Container w="container.lg" as="main" p={{ base: 3, lg: 5 }}>
         {children}
       </Container>
     </div>

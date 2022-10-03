@@ -10,7 +10,7 @@ const MadingItem = ({ id }: MadingItemProps) => {
     <Link href={`/mading/${id}`}>
       <Stack my={5} direction="row" alignItems="center" gap={10}>
         <Stack>
-          <Heading as="h2" size="md">
+          <Heading as="h2" size="md" _hover={{ textDecoration: 'underline' }} cursor="pointer">
             Mading Headline
           </Heading>
           <Text color="blackAlpha.500">5 Days ago</Text>

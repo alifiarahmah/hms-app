@@ -13,6 +13,7 @@ import {
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { MdMenu } from 'react-icons/md';
 import Link from './link';
 import Login from './login';
@@ -31,18 +32,20 @@ export const routes = [
     label: 'Kalender',
   },
   {
-    path: '/mading',
-    label: 'Mading',
+    path: '/info',
+    label: 'Informasi',
   },
   {
-    path: '/gallery',
-    label: 'Gallery',
+    path: '/mading',
+    label: 'Mading',
   },
 ];
 
 const Navbar = () => {
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+
+  const session = useSession();
 
   return (
     <>
@@ -52,9 +55,11 @@ const Navbar = () => {
         alignItems="center"
         display="flex"
         justifyContent="space-between"
-        width="100%"
+        w="100%"
         position="relative"
         py={2}
+        px={5}
+        boxShadow="md"
       >
         <Heading as="h1">HMS App</Heading>
         <Box display={{ base: 'none', lg: 'flex' }}>
@@ -94,7 +99,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <Button onClick={onModalOpen} variant="outline">
-                Login
+                {session.status === 'authenticated' ? session.data.user?.name : null}
               </Button>
             </Stack>
           </DrawerBody>

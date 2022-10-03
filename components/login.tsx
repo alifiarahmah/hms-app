@@ -11,11 +11,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { signIn, signOut } from 'next-auth/react';
 import { base64ToUint8Array } from '@libs/util';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Login = ({
   isOpen,
@@ -28,6 +30,8 @@ const Login = ({
 }) => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
+  const toast = useToast();
+  const session = useSession();
 
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
@@ -51,6 +55,13 @@ const Login = ({
     if (res) {
       if (res.error) {
         // Push toast if error
+        toast({
+          title: 'Login gagal',
+          description: res.error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       } else {
         if (!subscription) {
           const sub = await registration.pushManager.subscribe({
@@ -68,6 +79,13 @@ const Login = ({
             body: JSON.stringify(subscription),
           }).then((res) => res.json());
         }
+        toast({
+          title: 'Login berhasil',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        onClose();
         router.push('/');
       }
     }
@@ -107,18 +125,15 @@ const Login = ({
               />
               <InputRightElement width="4.5rem">
                 <Button h="1.75rem" size="sm" onClick={handleClick}>
-                  {show ? 'Hide' : 'Show'}
+                  {show ? <AiFillEyeInvisible /> : <AiFillEye />}
                 </Button>
               </InputRightElement>
             </InputGroup>
-            <Button onClick={handleSubmit}>Log In</Button>
           </Stack>
         </ModalBody>
 
-        <ModalFooter>
-          {/* <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Download
-            </Button> */}
+        <ModalFooter display="flex">
+          <Button onClick={handleSubmit}>Log In</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

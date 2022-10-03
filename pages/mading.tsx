@@ -17,8 +17,6 @@ import {
 } from '@chakra-ui/react';
 import Layout from 'components/layout';
 
-// TODO: implement pagination
-
 const Gallery = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
