@@ -1,4 +1,4 @@
-import { Container } from '@chakra-ui/react';
+import { Container, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Navbar from './navbar';
 
@@ -11,7 +11,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div>
       <Navbar />
       <Container w="container.lg" as="main" p={{ base: 3, lg: 5 }}>
-        {children}
+        <Stack>{children}</Stack>
       </Container>
     </div>
   );
