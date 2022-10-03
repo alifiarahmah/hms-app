@@ -68,7 +68,7 @@ export default function Home() {
         />
       </Box>
       <Box display={onPreview ? 'block' : 'none'}>
-        <div>{value}</div>
+        <div dangerouslySetInnerHTML={{ __html: value }} />
       </Box>
     </Container>
   );
