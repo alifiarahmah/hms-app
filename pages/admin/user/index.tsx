@@ -1,3 +1,4 @@
+import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from '@chakra-ui/icons';
 import {
   Button,
   Divider,
@@ -7,7 +8,6 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputLeftAddon,
   InputRightAddon,
   Table,
   Tbody,
@@ -17,14 +17,13 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react';
-import Sidebar from 'components/sidebar';
-import { SearchIcon, DeleteIcon, EditIcon, AddIcon } from '@chakra-ui/icons';
-import useWarning from 'components/warningModal';
 import { User } from '@prisma/client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import Loading from 'components/loading';
 import CreateUserModal from 'components/admin/createUserModal';
+import Sidebar from 'components/admin/sidebar';
+import Loading from 'components/loading';
+import useWarning from 'components/warningModal';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const AdminUser = () => {
   const { warning, WarningModal } = useWarning();

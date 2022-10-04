@@ -1,19 +1,23 @@
-import { Container, Stack } from '@chakra-ui/react';
+import { Container, Heading, Stack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import Navbar from './navbar';
 
 export interface LayoutProps {
+  title?: string;
   children: ReactNode;
 }
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ title, children }: LayoutProps) => {
   return (
-    <div>
+    <>
       <Navbar />
-      <Container w="container.lg" as="main" p={{ base: 3, lg: 5 }}>
-        <Stack>{children}</Stack>
+      <Container w="container.lg" as="main" px={{ base: 3, lg: 5 }} py={10}>
+        <Stack>
+          {title && <Heading my={5}>{title}</Heading>}
+          {children}
+        </Stack>
       </Container>
-    </div>
+    </>
   );
 };
 

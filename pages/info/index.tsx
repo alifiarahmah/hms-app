@@ -1,13 +1,24 @@
-import { Heading, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Button, ButtonGroup, Stack } from '@chakra-ui/react';
+import InfoItem from 'components/info/info-item';
 import Layout from 'components/layout';
-import MadingItem from 'components/mading/mading-item';
 
 const Mading = () => {
   return (
-    <Layout>
-      <Heading>Mading</Heading>
-      
-      <section></section>
+    <Layout title="Informasi">
+      <ButtonGroup>
+        <Button>Kesekjenan</Button>
+        <Button>Medkominfo</Button>
+        <Button>Internal</Button>
+        <Button>Kemasyarakatan</Button>
+        <Button>Keprofesian</Button>
+        <Button>Organization Development</Button>
+      </ButtonGroup>
+      <Stack gap={5}>
+        <InfoItem id="1" />
+        <InfoItem id="1" />
+        <InfoItem id="1" />
+        <InfoItem id="1" />
+      </Stack>
     </Layout>
   );
 };

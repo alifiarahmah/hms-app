@@ -17,7 +17,7 @@ import {
 import { motion } from 'framer-motion';
 import { signOut } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import Link from './link';
+import Link from '../link';
 
 // Chakra ui sidebar
 const Sidebar = () => {
@@ -35,7 +35,7 @@ const Sidebar = () => {
         }
       });
     }
-  }, []);
+  }, [onClose]);
 
   useEffect(() => {
     if (isOpen) {

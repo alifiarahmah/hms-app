@@ -1,17 +1,17 @@
 import { Heading, Image, Stack, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
-export interface MadingItemProps {
+export interface InfoItemProps {
   id: string;
 }
 
-const MadingItem = ({ id }: MadingItemProps) => {
+const InfoItem = ({ id }: InfoItemProps) => {
   return (
-    <Link href={`/mading/${id}`}>
+    <Link href={`/info/${id}`}>
       <Stack my={5} direction="row" alignItems="center" gap={10}>
         <Stack>
           <Heading as="h2" size="md" _hover={{ textDecoration: 'underline' }} cursor="pointer">
-            Mading Headline
+            Headline
           </Heading>
           <Text color="blackAlpha.500">5 Days ago</Text>
           <Text>
@@ -27,4 +27,4 @@ const MadingItem = ({ id }: MadingItemProps) => {
   );
 };
 
-export default MadingItem;
+export default InfoItem;
