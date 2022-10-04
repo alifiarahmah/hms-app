@@ -2,7 +2,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import { theme } from 'theme';
-import '../public/globals.css';
+import 'public/globals.css';
+import 'public/calendar.css';
 
 import '@fontsource/harmattan/400.css';
 import '@fontsource/harmattan/700.css';

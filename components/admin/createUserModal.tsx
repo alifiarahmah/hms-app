@@ -92,13 +92,16 @@ const CreateUserModal = ({ isOpen, onOpen, onClose }: CreateUserModalProps) => {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent p={4} pt={8} gap={4}>
-        {['NIM', 'Name', 'Email', 'Password'].map((item, idx) => {
+        {['NIM', 'Name', 'Email', 'Password'].map((item: string, idx) => {
           return (
             <FormControl key={idx}>
               <FormLabel>
                 <Heading size="xs">{item}</Heading>
               </FormLabel>
-              <Input onChange={(e) => handleChangeUser(item.toLowerCase(), e.target.value)} />
+              <Input
+                value={(user as any)[item.toLowerCase()]}
+                onChange={(e) => handleChangeUser(item.toLowerCase(), e.target.value)}
+              />
             </FormControl>
           );
         })}

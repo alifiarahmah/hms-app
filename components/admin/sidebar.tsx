@@ -44,17 +44,18 @@ const Sidebar = () => {
       setSidebarSize('67.5px');
     }
   }, [isOpen]);
+
   return (
     <Flex
       onMouseLeave={onClose}
       bg="primary.500"
       color="white"
       px={2}
-      h="100vh"
-      position="absolute"
+      position="sticky"
       as={motion.div}
       transition="ease-out 0.2s"
       w={sidebarSize}
+      h={'120vh'}
       zIndex={100}
     >
       {isOpen ? (

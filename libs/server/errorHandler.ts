@@ -1,6 +1,6 @@
 import { GeneralError } from '@errors/general';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { ZodError } from 'zod';
+import { ZodError, ZodIssue } from 'zod';
 
 const ErrorHandler =
   (handler: (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void) =>
@@ -11,7 +11,10 @@ const ErrorHandler =
       if (error instanceof GeneralError) {
         res.status(error.code).json({ message: error.message });
       } else if (error instanceof ZodError) {
-        res.status(400).json({ message: error.errors.map((err: any) => err.message).join(', ') });
+        console.log(error);
+        res
+          .status(400)
+          .json({ message: error.errors.map((err: ZodIssue) => err.message).join(', ') });
       } else if (error instanceof Error) {
         res.status(500).json({ message: `Internal server error: ${error.message}` });
       } else {

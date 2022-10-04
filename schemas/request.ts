@@ -35,3 +35,17 @@ export const CreateSingleUserSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
 });
+
+export type CreateSingleUserReqType = z.infer<typeof CreateSingleUserSchema>;
+
+export const CreateSingleEventSchema = z.object({
+  uid: z.string().optional(),
+  start: z.preprocess((value) => new Date(value as string), z.date()),
+  end: z.preprocess((value) => new Date(value as string), z.date()),
+  title: z.string(),
+  description: z.string().optional(),
+  rrule: z.string().optional().nullable(),
+  meetingLink: z.string().optional().nullable(),
+});
+
+export type CreateSingleEventReqType = z.infer<typeof CreateSingleEventSchema>;
