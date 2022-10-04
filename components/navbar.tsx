@@ -10,6 +10,7 @@ import {
   DrawerOverlay,
   Heading,
   IconButton,
+  Image,
   Stack,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -61,7 +62,9 @@ const Navbar = () => {
         px={5}
         boxShadow="md"
       >
-        <Heading as="h1">HMS App</Heading>
+        <Link href="/">
+          <Image src="/icons/android-icon-48x48.png" alt="logo" w="48px" h="48px" />
+        </Link>
         <Box display={{ base: 'none', lg: 'flex' }}>
           <Stack direction="row" alignItems="center">
             {routes.map((r) => (
