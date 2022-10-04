@@ -3,6 +3,7 @@ import {
   Box,
   BoxProps,
   Button,
+  Center,
   Container,
   Drawer,
   DrawerBody,
@@ -120,17 +121,36 @@ const Navbar = () => {
           <DrawerHeader my={5}>
             <DrawerCloseButton />
           </DrawerHeader>
-          <DrawerBody p={5}>
-            <Heading>HMSApp</Heading>
+          <DrawerBody px={0}>
+            <Center>
+              <Image src="/icons/android-icon-48x48.png" alt="logo" w="48px" h="48px" />
+              <Heading ml={2}>HMSApp</Heading>
+            </Center>
             <Stack direction="column" my={5}>
+              {session.status === 'authenticated' && (
+                <Text textAlign="center">
+                  Logged in as <strong>{session.data.user?.name}</strong>
+                </Text>
+              )}
               {routes.map((r) => (
-                <Link key={r.label} href={r.path}>
+                <DrawerLink key={r.label} href={r.path}>
                   {r.label}
-                </Link>
+                </DrawerLink>
               ))}
-              <Button onClick={onModalOpen} variant="outline">
-                {session.status === 'authenticated' ? session.data.user?.name : null}
-              </Button>
+              {session.status === 'authenticated' ? (
+                <DrawerLink href="/profile">Profile</DrawerLink>
+              ) : null}
+            </Stack>
+            <Stack px={5}>
+              {session.status === 'authenticated' ? (
+                <Button onClick={() => signOut()} variant="outline">
+                  Logout
+                </Button>
+              ) : (
+                <Button onClick={onModalOpen} variant="outline">
+                  Login
+                </Button>
+              )}
             </Stack>
           </DrawerBody>
         </DrawerContent>
