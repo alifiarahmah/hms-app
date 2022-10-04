@@ -11,7 +11,14 @@ const Layout = ({ title, children }: LayoutProps) => {
   return (
     <>
       <Navbar />
-      <Container w="container.lg" as="main" px={{ base: 3, lg: 5 }} py={10}>
+      <Container
+        bg="primary.100"
+        w={{ base: '100%', lg: 'container.lg' }}
+        minH="100vh"
+        as="main"
+        px={{ base: 3, lg: 5 }}
+        py={10}
+      >
         <Stack>
           {title && <Heading my={5}>{title}</Heading>}
           {children}

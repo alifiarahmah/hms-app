@@ -30,6 +30,9 @@ export const theme = extendTheme({
       body: {
         fontSize: '1.25rem',
         bg: 'primary.100',
+        bgImage: 'url("/VSTOCKS/PATTERN/PATTERN5_edited.png")',
+        bgRepeat: 'repeat',
+        bgSize: 'cover',
       },
       h1: {},
       h2: {},
