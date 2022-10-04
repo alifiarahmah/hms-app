@@ -1,5 +1,7 @@
 import {
+  Avatar,
   Box,
+  BoxProps,
   Button,
   Container,
   Drawer,
@@ -11,13 +13,27 @@ import {
   Heading,
   IconButton,
   Image,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
   Stack,
+  Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { MdMenu } from 'react-icons/md';
-import Link from './link';
+import Link, { DrawerLink } from './link';
 import Login from './login';
+
+const DrawerButton = ({ children, ...props }: BoxProps) => {
+  return (
+    <Box {...props} cursor="pointer" display="block" py={2} px={4} _hover={{ bg: 'primary.100' }}>
+      {children}
+    </Box>
+  );
+};
 
 export const routes = [
   {
@@ -62,9 +78,29 @@ const Navbar = () => {
                   {r.label}
                 </Link>
               ))}
-              <Button onClick={onModalOpen} variant="outline">
-                Login
-              </Button>
+              {session.status === 'authenticated' ? (
+                <Popover>
+                  <PopoverTrigger>
+                    <Avatar cursor="pointer" />
+                  </PopoverTrigger>
+                  <PopoverContent bg="black.100" color="black" w="fit-content">
+                    <PopoverHeader>
+                      <Text>Logged in as</Text>
+                      <Text fontSize="xl" fontWeight="bold">
+                        {session.data.user?.name}
+                      </Text>
+                    </PopoverHeader>
+                    <PopoverBody p={0}>
+                      <DrawerLink href="/profile">Profile</DrawerLink>
+                      <DrawerButton onClick={() => signOut()}>Log Out</DrawerButton>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
+              ) : (
+                <Button onClick={onModalOpen} variant="outline">
+                  Login
+                </Button>
+              )}
             </Stack>
           </Box>
           <IconButton

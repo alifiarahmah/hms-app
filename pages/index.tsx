@@ -7,7 +7,12 @@ const Index = () => {
   const session = useSession();
   return (
     <Layout>
-      <Heading>Upcoming Events</Heading>
+      {session.status === 'authenticated' ? (
+        <Heading>Hello, {session.data?.user?.name}</Heading>
+      ) : null}
+      <Heading fontSize={session.status === 'authenticated' ? 'xl' : '2xl'}>
+        Upcoming Events
+      </Heading>
       <Stack py={5}>
         {Array.from({ length: 5 }).map((_, i) => {
           return (

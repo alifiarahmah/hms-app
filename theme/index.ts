@@ -29,6 +29,7 @@ export const theme = extendTheme({
     global: {
       body: {
         fontSize: '1.25rem',
+        color: 'black.500',
         bg: 'primary.100',
         bgImage: 'url("/VSTOCKS/PATTERN/PATTERN5_edited.png")',
         bgRepeat: 'repeat',
