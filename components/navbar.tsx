@@ -50,42 +50,33 @@ const Navbar = () => {
 
   return (
     <>
-      <Container
-        bg="primary.500"
-        color="white"
-        alignItems="center"
-        display="flex"
-        justifyContent="space-between"
-        w="100%"
-        position="relative"
-        py={2}
-        px={5}
-        boxShadow="md"
-      >
-        <Link href="/">
-          <Image src="/icons/android-icon-48x48.png" alt="logo" w="48px" h="48px" />
-        </Link>
-        <Box display={{ base: 'none', lg: 'flex' }}>
-          <Stack direction="row" alignItems="center">
-            {routes.map((r) => (
-              <Link key={r.label} href={r.path}>
-                {r.label}
-              </Link>
-            ))}
-            <Button onClick={onModalOpen} variant="outline">
-              Login
-            </Button>
-          </Stack>
-        </Box>
-        <IconButton
-          variant="unstyled"
-          size="lg"
-          onClick={onDrawerOpen}
-          display={{ base: 'flex', lg: 'none' }}
-          aria-label="Menu"
-          icon={<MdMenu size="2rem" color="white" />}
-        />
-      </Container>
+      <Box color="white" bg="primary.500" w="100%" position="relative" py={2} px={5} boxShadow="md">
+        <Container display="flex" alignItems="center" justifyContent="space-between">
+          <Link href="/">
+            <Image src="/icons/android-icon-48x48.png" alt="logo" w="48px" h="48px" />
+          </Link>
+          <Box display={{ base: 'none', lg: 'flex' }}>
+            <Stack direction="row" alignItems="center">
+              {routes.map((r) => (
+                <Link key={r.label} href={r.path}>
+                  {r.label}
+                </Link>
+              ))}
+              <Button onClick={onModalOpen} variant="outline">
+                Login
+              </Button>
+            </Stack>
+          </Box>
+          <IconButton
+            variant="unstyled"
+            size="lg"
+            onClick={onDrawerOpen}
+            display={{ base: 'flex', lg: 'none' }}
+            aria-label="Menu"
+            icon={<MdMenu size="2rem" color="white" />}
+          />
+        </Container>
+      </Box>
 
       <Drawer isOpen={isDrawerOpen} placement="right" onClose={onDrawerClose}>
         <DrawerOverlay />
