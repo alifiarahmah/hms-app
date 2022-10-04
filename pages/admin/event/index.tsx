@@ -63,7 +63,6 @@ const AdminEvent = () => {
         },
         body: JSON.stringify({ ...event, rrule: rrule || null }),
       }).then((res) => res.json());
-      console.log;
       if (!res.isError) {
         // router.reload();
       } else {
@@ -78,7 +77,6 @@ const AdminEvent = () => {
   };
 
   const handleSelect = (event: Event) => {
-    console.log(event);
     handleOpenModal(event, true);
   };
 
@@ -93,7 +91,6 @@ const AdminEvent = () => {
       })
         .then((res) => res.json())
         .catch((err) => console.log(err));
-      console.log(res);
       if (!res.isError) {
         // router.reload();
       } else {
@@ -162,7 +159,6 @@ const AdminEvent = () => {
               events={events}
               onSelectEvent={handleSelect}
               onSelectSlot={(slotInfo) => {
-                console.log(slotInfo);
                 const event = {
                   start: slotInfo.start,
                   end: slotInfo.end,

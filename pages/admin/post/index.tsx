@@ -30,9 +30,7 @@ const AdminPost = () => {
     warning({
       title: 'Hapus post',
       description: 'Apakah anda yakin ingin menghapus post ini?',
-      onConfirm: () => {
-        console.log(id);
-      },
+      onConfirm: () => {},
     });
   };
 

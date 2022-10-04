@@ -11,7 +11,6 @@ const ErrorHandler =
       if (error instanceof GeneralError) {
         res.status(error.code).json({ message: error.message });
       } else if (error instanceof ZodError) {
-        console.log(error);
         res
           .status(400)
           .json({ message: error.errors.map((err: ZodIssue) => err.message).join(', ') });

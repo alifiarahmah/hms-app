@@ -35,9 +35,7 @@ const AdminUser = () => {
     warning({
       title: 'Hapus user',
       description: 'Apakah anda yakin ingin menghapus user ini?',
-      onConfirm: () => {
-        console.log(id);
-      },
+      onConfirm: () => {},
     });
   };
 

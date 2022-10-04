@@ -45,20 +45,15 @@ const Index = () => {
       userVisibleOnly: true,
       applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),
     });
-    // TODO: you should call your API to save subscription data on server in order to send web push notification from server
     setSubscription(sub);
     setIsSubscribed(true);
-    console.log('web push subscribed!');
-    console.log(sub);
   };
 
   const unsubscribeButtonOnClick = async (event) => {
     event.preventDefault();
     await subscription.unsubscribe();
-    // TODO: you should call your API to delete or invalidate subscription data on server
     setSubscription(null);
     setIsSubscribed(false);
-    console.log('web push unsubscribed!');
   };
 
   const sendNotificationButtonOnClick = async (event) => {

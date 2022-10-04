@@ -38,7 +38,6 @@ const CreateUserModal = ({ isOpen, onOpen, onClose }: CreateUserModalProps) => {
     });
   };
   const handleSubmit = () => {
-    console.log(user);
     try {
       CreateSingleUserSchema.parse(user);
       fetch('/api/admin/user', {
