@@ -5,7 +5,7 @@ import Layout from 'components/layout';
 const Mading = () => {
   return (
     <Layout title="Informasi">
-      <ButtonGroup>
+      <ButtonGroup py={5} display={{ base: 'none', lg: 'block' }}>
         <Button>Kesekjenan</Button>
         <Button>Medkominfo</Button>
         <Button>Internal</Button>

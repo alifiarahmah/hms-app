@@ -22,7 +22,7 @@ const Gallery = () => {
   return (
     <>
       <Layout title="Mading">
-        <ButtonGroup py={5}>
+        <ButtonGroup py={5} display={{ base: 'none', lg: 'block' }}>
           <Button>Kesekjenan</Button>
           <Button>Medkominfo</Button>
           <Button>Internal</Button>
