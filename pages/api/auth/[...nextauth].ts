@@ -44,6 +44,9 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       }),
     ],
     secret: process.env.NEXTAUTH_SECRET,
+    session: {
+      strategy: 'jwt',
+    },
     adapter: PrismaAdapter(prisma),
     callbacks: {
       jwt: async ({ token, user }) => {
