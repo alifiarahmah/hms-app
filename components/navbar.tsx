@@ -93,6 +93,9 @@ const Navbar = () => {
                     </PopoverHeader>
                     <PopoverBody p={0}>
                       <DrawerLink href="/profile">Profile</DrawerLink>
+                      {session.status === 'authenticated' && session.data.user.name === 'admin' ? (
+                        <DrawerLink href="/admin/user">Admin Page</DrawerLink>
+                      ) : null}
                       <DrawerButton onClick={() => signOut()}>Log Out</DrawerButton>
                     </PopoverBody>
                   </PopoverContent>
@@ -139,6 +142,9 @@ const Navbar = () => {
               ))}
               {session.status === 'authenticated' ? (
                 <DrawerLink href="/profile">Profile</DrawerLink>
+              ) : null}
+              {session.status === 'authenticated' && session.data.user.name === 'admin' ? (
+                <DrawerLink href="/admin/user">Admin Page</DrawerLink>
               ) : null}
             </Stack>
             <Stack px={5}>
