@@ -71,7 +71,7 @@ const Sidebar = () => {
           <Link href="/admin/gallery">
             <Heading size="md">Gallery</Heading>
           </Link>
-          <Link href="/admin/posts">
+          <Link href="/admin/post">
             <Heading size="md">Posts</Heading>
           </Link>
           <Spacer />
