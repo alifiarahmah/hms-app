@@ -20,7 +20,11 @@ const Layout = ({ title, children }: LayoutProps) => {
         py={10}
       >
         <Stack>
-          {title && <Heading my={5}>{title}</Heading>}
+          {title && (
+            <Heading my={5} fontFamily={'Gurindam'}>
+              {title}
+            </Heading>
+          )}
           {children}
         </Stack>
       </Container>

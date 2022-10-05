@@ -2,11 +2,11 @@
 
 /* Gurindam */
 @font-face {
-	font-family: Gurindam;
+	font-family: 'Gurindam';
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url('./fonts/Gurindam.ttf') format('ttf');
+	src: url('/fonts/Gurindam.ttf');
 }
 
 /* Gurindam Bold */
@@ -15,7 +15,7 @@
 	font-style: normal;
 	font-weight: 700;
 	font-display: swap;
-	src: url('./fonts/GurindamTebal.ttf') format('ttf');
+	src: url('/fonts/GurindamTebal.ttf');
 }
 
 /* Gurindam Italic */
@@ -24,7 +24,7 @@
 	font-style: italic;
 	font-weight: 400;
 	font-display: swap;
-	src: url('./fonts/GurindamSerong.ttf') format('ttf');
+	src: url('/fonts/GurindamSerong.ttf');
 }
 
 /* Oceanside Typewriter */
@@ -33,5 +33,5 @@
 	font-style: normal;
 	font-weight: 400;
 	font-display: swap;
-	src: url('./fonts/OceansideTypewriter.ttf') format('ttf');
+	src: url('/fonts/OceansideTypewriter.ttf');
 }
