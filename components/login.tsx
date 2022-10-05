@@ -110,31 +110,35 @@ const Login = ({
       <ModalContent>
         <ModalHeader>Login</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <Stack direction="column">
-            <Input
-              placeholder="NIM"
-              onChange={(e) => setFormData({ ...formData, nim: e.target.value })}
-            />
-            <InputGroup size="md">
+        <form>
+          <ModalBody>
+            <Stack direction="column">
               <Input
-                pr="4.5rem"
-                type={show ? 'text' : 'password'}
-                placeholder="Enter password"
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                placeholder="NIM"
+                onChange={(e) => setFormData({ ...formData, nim: e.target.value })}
               />
-              <InputRightElement width="4.5rem">
-                <Button h="1.75rem" size="sm" onClick={handleClick}>
-                  {show ? <AiFillEyeInvisible /> : <AiFillEye />}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
-          </Stack>
-        </ModalBody>
+              <InputGroup size="md">
+                <Input
+                  pr="4.5rem"
+                  type={show ? 'text' : 'password'}
+                  placeholder="Enter password"
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button h="1.75rem" size="sm" onClick={handleClick}>
+                    {show ? <AiFillEyeInvisible /> : <AiFillEye />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </Stack>
+          </ModalBody>
 
-        <ModalFooter display="flex">
-          <Button onClick={handleSubmit}>Log In</Button>
-        </ModalFooter>
+          <ModalFooter display="flex">
+            <Button type="submit" onClick={handleSubmit}>
+              Log In
+            </Button>
+          </ModalFooter>
+        </form>
       </ModalContent>
     </Modal>
   );

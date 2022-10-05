@@ -46,5 +46,10 @@ export const theme = extendTheme({
         maxWidth: 'auto',
       },
     },
+    Input: {
+      defaultProps: {
+        variant: 'filled',
+      },
+    },
   },
 });
