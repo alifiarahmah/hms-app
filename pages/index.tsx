@@ -1,10 +1,33 @@
-import { Box, Button, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Heading, HStack, Link, Stack, Text, useToast } from '@chakra-ui/react';
 import Layout from 'components/layout';
-import Link from 'components/link';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { ICalendar } from 'types/calendar';
 
 const Index = () => {
   const session = useSession();
+  const toast = useToast();
+  const [events, setEvents] = useState<Array<ICalendar>>([]);
+
+  useEffect(() => {
+    if (session.status === 'authenticated') {
+      fetch('/api/admin/calendar')
+        .then((res) => res.json())
+        .then((data) => {
+          setEvents(data.data);
+        })
+        .catch((err) => {
+          toast({
+            title: 'Error',
+            description: err.message,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+  });
+
   return (
     <Layout>
       {session.status === 'authenticated' ? (
@@ -13,19 +36,21 @@ const Index = () => {
       <Heading fontSize={session.status === 'authenticated' ? 'xl' : '2xl'}>
         Upcoming Events
       </Heading>
-      <Stack py={5}>
-        {Array.from({ length: 5 }).map((_, i) => {
+      <Stack py={5} gap={5}>
+        {events.map((event: ICalendar) => {
           return (
-            <Box key={i}>
-              <Text fontWeight="bold">Event {i}</Text>
+            <Box key={event.uid}>
+              <Text fontWeight="bold">{event.title}</Text>
               <HStack justifyContent="space-between">
-                <Text>DD-MM-YY HH:MM</Text>
-                <Text>Medkominfo</Text>
+                <Text>{event.start}</Text>
+                {/* <Text>Medkominfo</Text> */}
               </HStack>
-              <Text>Lorem ipsum dolor sit amet</Text>
-              <Link href="https://google.com" isExternal>
-                <Button>Join Meeting</Button>
-              </Link>
+              <Text>{event.description}</Text>
+              {event.meetingLink ? (
+                <Link href={event.meetingLink} isExternal>
+                  <Button>Join Meeting</Button>
+                </Link>
+              ) : null}
             </Box>
           );
         })}

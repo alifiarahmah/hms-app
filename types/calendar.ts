@@ -1,4 +1,4 @@
-export interface Calendar {
+export interface ICalendar {
   uid: string;
   start: string;
   end: string;
