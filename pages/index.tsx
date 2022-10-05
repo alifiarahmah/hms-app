@@ -1,8 +1,19 @@
 import { Box, Button, Heading, HStack, Link, Stack, Text, useToast } from '@chakra-ui/react';
 import Layout from 'components/layout';
+import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { ICalendar } from 'types/calendar';
+
+const readableDate = (date: string) => {
+  const d = new Date(date);
+  return moment(d).format('D/MM/YYYY HH:MM');
+};
+
+const relativeDate = (date: string) => {
+  const d = new Date(date);
+  return moment(d).startOf('day').fromNow();
+};
 
 const Index = () => {
   const session = useSession();
@@ -14,7 +25,7 @@ const Index = () => {
       fetch('/api/admin/calendar')
         .then((res) => res.json())
         .then((data) => {
-          setEvents(data.data);
+          setEvents(data.data.reverse());
         })
         .catch((err) => {
           toast({
@@ -40,9 +51,13 @@ const Index = () => {
         {events.map((event: ICalendar) => {
           return (
             <Box key={event.uid}>
-              <Text fontWeight="bold">{event.title}</Text>
+              <Text fontWeight="bold">
+                {event.title} ({relativeDate(event.start)})
+              </Text>
               <HStack justifyContent="space-between">
-                <Text>{event.start}</Text>
+                <Text>
+                  {readableDate(event.start)} - {readableDate(event.end)}
+                </Text>
                 {/* <Text>Medkominfo</Text> */}
               </HStack>
               <Text>{event.description}</Text>
