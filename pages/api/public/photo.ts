@@ -5,7 +5,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const Photo = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'GET') {
-    const photos = await prisma.image.findMany({});
+    // const photos = await prisma.image.findMany({});
+    const photos = await prisma.imagePost.findMany({});
     res.status(200).json(serialize('Get photo success', photos));
   } else {
     throw new MethodNotAllowedError();

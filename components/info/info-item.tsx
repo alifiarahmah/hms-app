@@ -1,25 +1,31 @@
 import { Heading, Image, Stack, Text } from '@chakra-ui/react';
 import Link from 'next/link';
+import { IPost } from 'types/post';
 
-export interface InfoItemProps {
+interface InfoItem {
   id: string;
+  title: string;
+  content: string;
+  createdAt: string;
 }
 
-const InfoItem = ({ id }: InfoItemProps) => {
+const InfoItem = ({ id, title, content, createdAt }: IPost) => {
   return (
     <Link href={`/info/${id}`}>
-      <Stack my={5} direction="row" alignItems="center" gap={10}>
+      <Stack
+        my={5}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        gap={10}
+        w="100%"
+      >
         <Stack>
           <Heading as="h2" size="md" _hover={{ textDecoration: 'underline' }} cursor="pointer">
-            Headline
+            {title}
           </Heading>
-          <Text color="blackAlpha.500">5 Days ago</Text>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tempor tincidunt finibus.
-            Cras non lectus pretium, cursus odio nec, accumsan nulla. Nam egestas vestibulum mi, vel
-            consequat velit gravida nec. Nam massa augue, tempor et felis porttitor, malesuada
-            fringilla augue. Curabitur nec nisi vitae nisl semper vehicula.
-          </Text>
+          <Text color="blackAlpha.500">{createdAt}</Text>
+          <Text dangerouslySetInnerHTML={{ __html: content }} />
         </Stack>
         <Image width="100px" alt="thumbnail" src="https://source.unsplash.com/100x100" />
       </Stack>

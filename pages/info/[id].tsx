@@ -1,8 +1,7 @@
 import Layout from 'components/layout';
+import { IPost } from 'types/post';
 
-import { InfoItemProps } from 'components/info/info-item';
-
-const Index = ({ id }: InfoItemProps) => {
+const Index = ({ id }: IPost) => {
   return (
     <Layout title="title">
       <div>id: {id}</div>
