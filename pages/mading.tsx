@@ -29,6 +29,8 @@ const Gallery = () => {
           <Button>Kemasyarakatan</Button>
           <Button>Keprofesian</Button>
           <Button>Organization Development</Button>
+          <Button>ICEE</Button>
+          <Button>SIBADES</Button>
         </ButtonGroup>
         <SimpleGrid py={5} columns={{ base: 1, md: 2, lg: 3 }} spacing={10} mx={20} my={10}>
           {Array.from({ length: 15 }).map((_, i) => (

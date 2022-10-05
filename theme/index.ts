@@ -43,7 +43,7 @@ export const theme = extendTheme({
   components: {
     Container: {
       baseStyle: {
-        maxWidth: 'container.xl',
+        maxWidth: 'auto',
       },
     },
   },

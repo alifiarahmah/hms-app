@@ -73,7 +73,7 @@ const Navbar = () => {
             <Image src="/icons/android-icon-48x48.png" alt="logo" w="48px" h="48px" />
           </Link>
           <Box display={{ base: 'none', lg: 'flex' }}>
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" gap={3}>
               {routes.map((r) => (
                 <Link key={r.label} href={r.path}>
                   {r.label}
@@ -82,7 +82,7 @@ const Navbar = () => {
               {session.status === 'authenticated' ? (
                 <Popover>
                   <PopoverTrigger>
-                    <Avatar cursor="pointer" />
+                    <Avatar size="sm" cursor="pointer" />
                   </PopoverTrigger>
                   <PopoverContent bg="black.100" color="black" w="fit-content">
                     <PopoverHeader>

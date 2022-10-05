@@ -12,6 +12,8 @@ const Mading = () => {
         <Button>Kemasyarakatan</Button>
         <Button>Keprofesian</Button>
         <Button>Organization Development</Button>
+        <Button>ICEE</Button>
+        <Button>SIBADES</Button>
       </ButtonGroup>
       <Stack gap={5}>
         <InfoItem id="1" />
