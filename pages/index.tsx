@@ -1,5 +1,6 @@
 import { Box, Button, Heading, HStack, Link, Stack, Text, useToast } from '@chakra-ui/react';
 import Layout from 'components/layout';
+import Loading from 'components/loading';
 import moment from 'moment';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -18,7 +19,7 @@ const relativeDate = (date: string) => {
 const Index = () => {
   const session = useSession();
   const toast = useToast();
-  const [events, setEvents] = useState<Array<ICalendar>>([]);
+  const [events, setEvents] = useState<Array<ICalendar> | null>(null);
 
   useEffect(() => {
     if (session.status === 'authenticated') {
@@ -39,6 +40,13 @@ const Index = () => {
     }
   });
 
+  if (!events) {
+    return (
+      <Layout>
+        <Loading />
+      </Layout>
+    );
+  }
   return (
     <Layout>
       {session.status === 'authenticated' ? (
