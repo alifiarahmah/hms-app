@@ -8,7 +8,13 @@ import { CreateSingleUserSchema } from '@schemas/request';
 
 const User = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const users = await prisma.user.findMany({});
+    const users = await prisma.user.findMany({
+      where: {
+        nim: {
+          not: 'admin',
+        },
+      },
+    });
     res.status(200).json(serialize('Get users successful', users));
   } else if (req.method === 'POST') {
     const { name, email, password: unhashed, nim } = CreateSingleUserSchema.parse(req.body);
