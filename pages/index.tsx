@@ -38,7 +38,7 @@ const Index = () => {
           });
         });
     }
-  });
+  }, [session.status, toast]);
 
   if (!events) {
     return (
