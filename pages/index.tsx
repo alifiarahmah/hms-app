@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Link, Stack, Text, useToast } from '@chakra-ui/react';
+import { Box, Button, Heading, Link, Stack, Text, useToast } from '@chakra-ui/react';
 import Layout from 'components/layout';
 import Loading from 'components/loading';
 import moment from 'moment';
@@ -58,20 +58,21 @@ const Index = () => {
       <Stack py={5} gap={5}>
         {events.map((event: ICalendar) => {
           return (
-            <Box key={event.uid}>
-              <Text fontWeight="bold">
+            <Box key={event.uid} bg="primary.300" borderRadius="lg" p={3}>
+              <Text fontWeight="bold" fontSize="2xl">
                 {event.title} ({relativeDate(event.start)})
               </Text>
-              <HStack justifyContent="space-between">
-                <Text>
-                  {readableDate(event.start)} - {readableDate(event.end)}
-                </Text>
-                {/* <Text>Medkominfo</Text> */}
-              </HStack>
-              <Text>{event.description}</Text>
+              <Text fontSize="md" mt={1}>
+                {readableDate(event.start)} - {readableDate(event.end)}
+              </Text>
+              <Text fontSize="lg" mt={3}>
+                {event.description}
+              </Text>
               {event.meetingLink ? (
                 <Link href={event.meetingLink} isExternal>
-                  <Button>Join Meeting</Button>
+                  <Button mt={3} _hover={{ textDecoration: 'none' }}>
+                    Join Meeting
+                  </Button>
                 </Link>
               ) : null}
             </Box>
