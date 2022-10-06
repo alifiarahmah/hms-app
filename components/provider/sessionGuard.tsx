@@ -1,15 +1,20 @@
 import Loading from 'components/loading';
-import { datacatalog } from 'googleapis/build/src/apis/datacatalog';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 
 type ProtectedRoute = {
-  [key: string]: 'user' | 'admin';
+  [key: string]: 'user' | 'admin' | 'user-only';
 };
 
+/*
+user : for logged user and admin
+admin : for admin only
+user-only : for user only
+*/
 const protectedRoute: ProtectedRoute = {
   '/calendar': 'user',
   '/admin': 'admin',
+  '/profile': 'user-only',
 };
 
 interface SessionGuardProps {
@@ -44,6 +49,10 @@ const SessionGuard = ({ children }: SessionGuardProps) => {
         return children;
       }
     } else {
+      if (accessLevel === 'user-only' && data.user.nim === 'admin') {
+        router.push('/');
+        return <Loading />;
+      }
       return children;
     }
   } else {
