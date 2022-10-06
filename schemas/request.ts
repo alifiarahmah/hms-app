@@ -49,3 +49,11 @@ export const CreateSingleEventSchema = z.object({
 });
 
 export type CreateSingleEventReqType = z.infer<typeof CreateSingleEventSchema>;
+
+export const EditProfileSchema = z.object({
+  name: z.string().optional(),
+  email: z.string().email().optional(),
+  password: z.string().optional(),
+});
+
+export type EditProfileReqType = z.infer<typeof EditProfileSchema>;

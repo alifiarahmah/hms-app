@@ -22,7 +22,7 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Gurindam, Livvic, sans-serif',
+    heading: 'Livvic, sans-serif',
     body: 'Harmattan, sans-serif',
   },
   styles: {

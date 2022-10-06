@@ -65,73 +65,68 @@ const AdminUser = () => {
     return <Loading />;
   }
 
-  if (session.status === 'authenticated' && session.data.user.name === 'admin') {
-    return (
-      <Flex flexDir="row" w="100%" bg="primary.100">
-        <CreateUserModal isOpen={isOpen} onClose={handleCloseCreateUser} />
-        <WarningModal />
-        <Sidebar />
-        <Flex w="100%" maxH="100vh" gap={2} px={2} flexDir="column">
-          <Flex maxH="15vh" gap={2} pt={4} flexDir="column" position="sticky">
-            <Flex gap={8}>
-              <Heading color="primary.500">Users</Heading>
-              <InputGroup borderColor="primary.500" mt={2}>
-                <Input focusBorderColor="primary.500" />
-                <InputRightAddon bg="transparent">
-                  <SearchIcon />
-                </InputRightAddon>
-              </InputGroup>
-              <Button onClick={onOpen} mt={2} mr={4} colorScheme="primary" variant="link">
-                <AddIcon />
-              </Button>
-            </Flex>
-            <Divider borderColor="primary.500" />
+  return (
+    <Flex flexDir="row" w="100%" bg="primary.100">
+      <CreateUserModal isOpen={isOpen} onClose={handleCloseCreateUser} />
+      <WarningModal />
+      <Sidebar />
+      <Flex w="100%" maxH="100vh" gap={2} px={2} flexDir="column">
+        <Flex maxH="15vh" gap={2} pt={4} flexDir="column" position="sticky">
+          <Flex gap={8}>
+            <Heading color="primary.500">Users</Heading>
+            <InputGroup borderColor="primary.500" mt={2}>
+              <Input focusBorderColor="primary.500" />
+              <InputRightAddon bg="transparent">
+                <SearchIcon />
+              </InputRightAddon>
+            </InputGroup>
+            <Button onClick={onOpen} mt={2} mr={4} colorScheme="primary" variant="link">
+              <AddIcon />
+            </Button>
           </Flex>
-          {/* Chakra UI Table for users*/}
-          <Flex flexDir="column" overflow="auto">
-            <Table colorScheme="primary">
-              <Thead position="sticky" top="0" bg="primary.100" zIndex={50}>
-                <Tr>
-                  <Th>NIM</Th>
-                  <Th>Name</Th>
-                  <Th>Email</Th>
-                  <Th>Action</Th>
+          <Divider borderColor="primary.500" />
+        </Flex>
+        {/* Chakra UI Table for users*/}
+        <Flex flexDir="column" overflow="auto">
+          <Table colorScheme="primary">
+            <Thead position="sticky" top="0" bg="primary.100" zIndex={50}>
+              <Tr>
+                <Th>NIM</Th>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {userData.map((user: User) => (
+                <Tr key={user.id}>
+                  <Td>{user.nim}</Td>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>
+                    <HStack>
+                      <IconButton
+                        aria-label={`edit ${user.nim}`}
+                        icon={<EditIcon />}
+                        colorScheme="primary"
+                        onClick={() => handleEdit(user.id)}
+                      />
+                      <IconButton
+                        aria-label={`delete ${user.nim}`}
+                        icon={<DeleteIcon />}
+                        colorScheme="red"
+                        onClick={() => handleDelete(user.id)}
+                      />
+                    </HStack>
+                  </Td>
                 </Tr>
-              </Thead>
-              <Tbody>
-                {userData.map((user: User) => (
-                  <Tr key={user.id}>
-                    <Td>{user.nim}</Td>
-                    <Td>{user.name}</Td>
-                    <Td>{user.email}</Td>
-                    <Td>
-                      <HStack>
-                        <IconButton
-                          aria-label={`edit ${user.nim}`}
-                          icon={<EditIcon />}
-                          colorScheme="primary"
-                          onClick={() => handleEdit(user.id)}
-                        />
-                        <IconButton
-                          aria-label={`delete ${user.nim}`}
-                          icon={<DeleteIcon />}
-                          colorScheme="red"
-                          onClick={() => handleDelete(user.id)}
-                        />
-                      </HStack>
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Flex>
+              ))}
+            </Tbody>
+          </Table>
         </Flex>
       </Flex>
-    );
-  } else {
-    router.push('/');
-    return;
-  }
+    </Flex>
+  );
 };
 
 export default AdminUser;

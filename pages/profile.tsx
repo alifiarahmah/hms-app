@@ -1,80 +1,132 @@
-import { Box, Button, Heading, Input, SimpleGrid, Text, useToast } from '@chakra-ui/react';
+import { Button, Flex, Heading, Input, SimpleGrid, Spacer, Text, useToast } from '@chakra-ui/react';
+import { EditProfileReqType } from '@schemas/request';
 import Layout from 'components/layout';
+import Loading from 'components/loading';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Profile = () => {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
+  const [isEditable, setIsEditable] = useState(false);
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    nim: '',
+    password: '',
+  });
   const router = useRouter();
   const toast = useToast();
-  const [editMode, setEditMode] = useState(false);
-  const [editedName, setEditedName] = useState(session?.user.name);
-  const [editedEmail, setEditedEmail] = useState(session?.user.email);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    if (editMode) {
-      const res = await fetch('/api/user', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: session?.user.id,
-          name: editedName,
-          email: editedEmail,
-        }),
+  useEffect(() => {
+    fetch('/api/user/profile', {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { data } = res;
+        setUserData({ ...data, password: '' });
+      })
+      .catch((err) => {
+        router.reload();
       });
-      if (res.status === 200) {
-        setEditMode(false);
-        toast({
-          title: 'Profile updated',
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-        });
-      } else {
-        toast({
-          title: 'Profile update failed',
-          description: res.statusText,
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    } else {
-      setEditMode(true);
-    }
-  };
+  }, [router]);
 
   if (status === 'unauthenticated') {
     router.push('/');
-    return null;
   }
+
+  if (status !== 'authenticated' || !userData.nim) {
+    return <Loading />;
+  }
+
+  const handleSubmit = async () => {
+    const data: EditProfileReqType = {};
+    data.name = userData.name;
+    data.email = userData.email;
+    if (userData.password) {
+      data.password = userData.password;
+    }
+    const res = await fetch('/api/user/profile', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    if (res.isError) {
+      toast({
+        title: 'Gagal mengubah data',
+        description: res.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      router.reload();
+    } else {
+      toast({
+        title: 'Berhasil',
+        description: 'Data profil berhasil diubah',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+    setIsEditable(false);
+  };
+
   return (
     <Layout>
-      <Heading>Profile</Heading>
-      <SimpleGrid columns={2} rowGap={6} py={10}>
-        <Box>Name</Box>
-        <Text display={editMode ? 'none' : 'block'}>{editedName}</Text>
-        <Input
-          display={editMode ? 'block' : 'none'}
-          onChange={(e) => setEditedName(e.target.value)}
-        />
-        <Box>NIM</Box>
-        <Text>{session?.user.nim}</Text>
-        <Box>Email</Box>
-        <Text display={editMode ? 'none' : 'block'}>{editedEmail}</Text>
-        <Input
-          type="email"
-          display={editMode ? 'block' : 'none'}
-          onChange={(e) => setEditedEmail(e.target.value)}
-        />
-        <Box>Password</Box>
-        <Button>Change password</Button>
-      </SimpleGrid>
-      <Button onClick={handleSubmit}>{editMode ? 'Save' : 'Edit Account'}</Button>
+      <Flex flexDir="column" gap={8}>
+        <Heading>Profile</Heading>
+        <SimpleGrid columns={2} gap={4}>
+          <Heading size="xs">Nama</Heading>
+          {isEditable ? (
+            <Input
+              onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+              variant="outline"
+              borderColor="primary.500"
+              value={userData.name}
+            />
+          ) : (
+            <Text>{userData.name}</Text>
+          )}
+          <Heading size="xs">Email</Heading>
+          {isEditable ? (
+            <Input
+              onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+              variant="outline"
+              borderColor="primary.500"
+              value={userData.email}
+            />
+          ) : (
+            <Text>{userData.email}</Text>
+          )}
+          <Heading size="xs">Password</Heading>
+          {isEditable ? (
+            <Input
+              onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+              variant="outline"
+              borderColor="primary.500"
+              value={userData.password}
+            />
+          ) : (
+            <Text>-</Text>
+          )}
+        </SimpleGrid>
+      </Flex>
+      <Flex>
+        <Spacer />
+        {isEditable ? (
+          <Button colorScheme="blue" onClick={handleSubmit}>
+            Save
+          </Button>
+        ) : (
+          <Button colorScheme="primary" onClick={() => setIsEditable(true)}>
+            Edit
+          </Button>
+        )}
+      </Flex>
     </Layout>
   );
 };
