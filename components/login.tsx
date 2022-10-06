@@ -44,9 +44,6 @@ const Login = ({
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    if (!registration) {
-      return;
-    }
     const res = await signIn('credentials', {
       redirect: false,
       nim: formData.nim,
@@ -63,7 +60,7 @@ const Login = ({
           isClosable: true,
         });
       } else {
-        if (!subscription) {
+        if (!subscription && registration) {
           const sub = await registration.pushManager.subscribe({
             userVisibleOnly: true,
             applicationServerKey: base64ToUint8Array(process.env.NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY),

@@ -23,7 +23,9 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { User } from '@prisma/client';
 import { signOut, useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import { MdMenu } from 'react-icons/md';
 import Link, { DrawerLink } from './link';
 import Login from './login';
@@ -62,8 +64,21 @@ export const routes = [
 const Navbar = () => {
   const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const [userData, setUserData] = useState<null | User>(null);
 
-  const session = useSession();
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      fetch('/api/user/profile', {
+        method: 'GET',
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setUserData(res.data);
+        });
+    }
+  }, [status]);
 
   return (
     <>
@@ -79,7 +94,7 @@ const Navbar = () => {
                   {r.label}
                 </Link>
               ))}
-              {session.status === 'authenticated' ? (
+              {status === 'authenticated' && userData ? (
                 <Popover>
                   <PopoverTrigger>
                     <Avatar size="sm" cursor="pointer" />
@@ -88,12 +103,12 @@ const Navbar = () => {
                     <PopoverHeader>
                       <Text>Logged in as</Text>
                       <Text fontSize="xl" fontWeight="bold">
-                        {session.data.user?.name}
+                        {userData.name}
                       </Text>
                     </PopoverHeader>
                     <PopoverBody p={0}>
                       <DrawerLink href="/profile">Profile</DrawerLink>
-                      {session.status === 'authenticated' && session.data.user.name === 'admin' ? (
+                      {status === 'authenticated' && userData.name === 'admin' ? (
                         <DrawerLink href="/admin/user">Admin Page</DrawerLink>
                       ) : null}
                       <DrawerButton onClick={() => signOut()}>Log Out</DrawerButton>
@@ -130,25 +145,25 @@ const Navbar = () => {
               <Heading ml={2}>HMSApp</Heading>
             </Center>
             <Stack direction="column" my={5}>
-              {session.status === 'authenticated' && (
+              {status === 'authenticated' && userData ? (
                 <Text textAlign="center">
-                  Logged in as <strong>{session.data.user?.name}</strong>
+                  Logged in as <strong>{userData.name}</strong>
                 </Text>
-              )}
+              ) : null}
               {routes.map((r) => (
                 <DrawerLink key={r.label} href={r.path}>
                   {r.label}
                 </DrawerLink>
               ))}
-              {session.status === 'authenticated' ? (
+              {status === 'authenticated' && userData && userData.nim !== 'Admin' ? (
                 <DrawerLink href="/profile">Profile</DrawerLink>
               ) : null}
-              {session.status === 'authenticated' && session.data.user.name === 'admin' ? (
+              {status === 'authenticated' && userData && userData.nim === 'Admin' ? (
                 <DrawerLink href="/admin/user">Admin Page</DrawerLink>
               ) : null}
             </Stack>
             <Stack px={5}>
-              {session.status === 'authenticated' ? (
+              {status === 'authenticated' ? (
                 <Button onClick={() => signOut()} variant="outline">
                   Logout
                 </Button>
