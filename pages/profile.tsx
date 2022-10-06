@@ -62,15 +62,8 @@ const Profile = () => {
         duration: 5000,
         isClosable: true,
       });
-      router.reload();
     } else {
-      toast({
-        title: 'Berhasil',
-        description: 'Data profil berhasil diubah',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      });
+      router.reload();
     }
     setIsEditable(false);
   };
