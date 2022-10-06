@@ -27,7 +27,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const AdminUser = () => {
-  const session = useSession();
   const { warning, WarningModal } = useWarning();
   const router = useRouter();
   const [userData, setUserData] = useState<null | User[]>(null);

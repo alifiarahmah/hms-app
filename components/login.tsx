@@ -14,7 +14,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { base64ToUint8Array } from '@libs/util';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
@@ -31,7 +31,6 @@ const Login = ({
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const session = useSession();
 
   const [subscription, setSubscription] = useState<PushSubscription | null>(null);
   const [registration, setRegistration] = useState<ServiceWorkerRegistration | null>(null);
