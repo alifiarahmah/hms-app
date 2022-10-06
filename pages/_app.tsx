@@ -9,12 +9,15 @@ import '@fontsource/harmattan/400.css';
 import '@fontsource/harmattan/700.css';
 import '@fontsource/livvic/400.css';
 import '@fontsource/livvic/700.css';
+import SessionGuard from 'components/provider/sessionGuard';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
+        <SessionGuard>
+          <Component {...pageProps} />
+        </SessionGuard>
       </ChakraProvider>
     </SessionProvider>
   );

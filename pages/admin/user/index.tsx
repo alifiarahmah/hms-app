@@ -37,7 +37,16 @@ const AdminUser = () => {
     warning({
       title: 'Hapus user',
       description: 'Apakah anda yakin ingin menghapus user ini?',
-      onConfirm: () => {},
+      onConfirm: async () => {
+        await fetch(`/api/admin/user/${id}`, {
+          method: 'DELETE',
+        })
+          .then((res) => res.json())
+          .catch((err) => console.log(err))
+          .finally(() => {
+            router.reload();
+          });
+      },
     });
   };
 
