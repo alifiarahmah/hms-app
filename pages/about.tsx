@@ -1,5 +1,13 @@
-import { Heading } from '@chakra-ui/react';
+import { Heading, Stack, Text } from '@chakra-ui/react';
+import { organogram } from 'components/about/organogram';
 import Layout from 'components/layout';
+
+interface organogramItem {
+  title?: string;
+  name?: string;
+  nim?: string;
+  children?: organogramItem[];
+}
 
 const About = () => {
   return (
@@ -16,35 +24,35 @@ const About = () => {
         <Heading as="h2" mt={5} mb={3}>
           Organogram BP
         </Heading>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget nulla sit amet quam
-          lacinia hendrerit. Fusce mauris libero, blandit nec risus sed, malesuada malesuada tellus.
-          In pellentesque tellus id diam malesuada, sed volutpat ligula interdum. Aenean molestie,
-          ligula id vestibulum rhoncus, erat orci feugiat elit, sed luctus sapien odio non tortor.
-          Morbi mattis felis pharetra, volutpat enim id, egestas est. Aenean cursus eu ex vulputate
-          tempor. Suspendisse ac pellentesque lorem, et dignissim dui. Fusce et tincidunt velit, nec
-          pulvinar magna. Donec posuere nibh in scelerisque feugiat. Donec a magna urna. Nullam
-          turpis mi, consectetur a sem vel, porta eleifend purus. In nec diam eu nulla pretium
-          sagittis ut eget purus. Phasellus elementum neque vitae arcu tristique accumsan. In hac
-          habitasse platea dictumst. Phasellus pretium vulputate velit quis egestas.
-        </p>
-      </section>
-      <section>
-        <Heading as="h2" mt={5} mb={3}>
-          BSO
-        </Heading>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget nulla sit amet quam
-          lacinia hendrerit. Fusce mauris libero, blandit nec risus sed, malesuada malesuada tellus.
-          In pellentesque tellus id diam malesuada, sed volutpat ligula interdum. Aenean molestie,
-          ligula id vestibulum rhoncus, erat orci feugiat elit, sed luctus sapien odio non tortor.
-          Morbi mattis felis pharetra, volutpat enim id, egestas est. Aenean cursus eu ex vulputate
-          tempor. Suspendisse ac pellentesque lorem, et dignissim dui. Fusce et tincidunt velit, nec
-          pulvinar magna. Donec posuere nibh in scelerisque feugiat. Donec a magna urna. Nullam
-          turpis mi, consectetur a sem vel, porta eleifend purus. In nec diam eu nulla pretium
-          sagittis ut eget purus. Phasellus elementum neque vitae arcu tristique accumsan. In hac
-          habitasse platea dictumst. Phasellus pretium vulputate velit quis egestas.
-        </p>
+        {organogram.map((o: organogramItem, i) => (
+          <Stack my={5} key={i}>
+            <Heading fontSize="xl">{o.title}</Heading>
+            {o.name && (
+              <Text fontSize="xl">
+                {o.name} ({o.nim})
+              </Text>
+            )}
+            {o.children?.map((c1, j) => (
+              <Stack pl={5} key={j}>
+                <Heading fontSize="lg">{c1.title}</Heading>
+                {c1.name && (
+                  <Text fontSize="xl">
+                    {c1.name} ({c1.nim})
+                  </Text>
+                )}
+                {c1.children?.map((c2, k) => (
+                  <Stack pl={5} key={k}>
+                    {c2.name && (
+                      <Text fontSize="xl">
+                        {c2.name} ({c2.nim})
+                      </Text>
+                    )}
+                  </Stack>
+                ))}
+              </Stack>
+            ))}
+          </Stack>
+        ))}
       </section>
     </Layout>
   );
