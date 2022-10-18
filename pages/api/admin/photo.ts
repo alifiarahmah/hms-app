@@ -32,7 +32,7 @@ PhotoRoute.post(
         data: {
           id: fileId,
           title,
-          content,
+          content: content || '',
         },
       });
 
