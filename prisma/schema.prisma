@@ -12,7 +12,7 @@ datasource db {
 model Post {
   id        String      @id @default(cuid())
   title     String
-  content   String
+  content   String      @db.Text
   tags      Tag[]
   images    ImagePost[]
   createdAt DateTime    @default(now())

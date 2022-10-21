@@ -35,7 +35,8 @@ const Sidebar = () => {
         }
       });
     }
-  }, [onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -46,50 +47,53 @@ const Sidebar = () => {
   }, [isOpen]);
 
   return (
-    <Flex
-      onMouseLeave={onClose}
-      bg="primary.500"
-      color="white"
-      px={2}
-      position="sticky"
-      as={motion.div}
-      transition="ease-out 0.2s"
-      w={sidebarSize}
-      h={'120vh'}
-      zIndex={100}
-    >
-      {isOpen ? (
-        <VStack w="100%" py={4} gap={4}>
-          <Heading>HMSApp</Heading>
-          <Divider />
-          <Link href="/admin/user">
-            <Heading size="md">User</Heading>
-          </Link>
-          <Link href="/admin/event">
-            <Heading size="md">Event</Heading>
-          </Link>
-          <Link href="/admin/gallery">
-            <Heading size="md">Gallery</Heading>
-          </Link>
-          <Link href="/admin/post">
-            <Heading size="md">Posts</Heading>
-          </Link>
-          <Spacer />
-          <Divider />
-          <Button variant="outline" onClick={() => signOut()}>
-            Logout
-          </Button>
-        </VStack>
-      ) : (
-        <IconButton
-          colorScheme="primary"
-          aria-label="toggle-sidebar"
-          size="lg"
-          icon={<HamburgerIcon />}
-          onClick={onToggle}
-        />
-      )}
-    </Flex>
+    <>
+      <Box minW="67.5px" w="67.5px" position="sticky" h="120vh" />
+      <Flex
+        onMouseLeave={onClose}
+        bg="primary.500"
+        color="white"
+        px={2}
+        position={isOpen ? 'absolute' : 'fixed'}
+        as={motion.div}
+        transition="ease-out 0.2s"
+        w={sidebarSize}
+        h={'120vh'}
+        zIndex={100}
+      >
+        {isOpen ? (
+          <VStack w="100%" py={4} gap={4}>
+            <Heading>HMSApp</Heading>
+            <Divider />
+            <Link href="/admin/user">
+              <Heading size="md">User</Heading>
+            </Link>
+            <Link href="/admin/event">
+              <Heading size="md">Event</Heading>
+            </Link>
+            <Link href="/admin/gallery">
+              <Heading size="md">Gallery</Heading>
+            </Link>
+            <Link href="/admin/post">
+              <Heading size="md">Posts</Heading>
+            </Link>
+            <Spacer />
+            <Divider />
+            <Button variant="outline" onClick={() => signOut()}>
+              Logout
+            </Button>
+          </VStack>
+        ) : (
+          <IconButton
+            colorScheme="primary"
+            aria-label="toggle-sidebar"
+            size="lg"
+            icon={<HamburgerIcon />}
+            onClick={onToggle}
+          />
+        )}
+      </Flex>
+    </>
   );
 };
 

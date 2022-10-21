@@ -117,8 +117,6 @@ export default function Home() {
       result = result.replace(src, newSrc);
     }
 
-    console.log(result);
-
     const res = await fetch('/api/admin/post', {
       method: 'POST',
       headers: {

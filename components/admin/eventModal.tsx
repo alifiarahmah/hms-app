@@ -20,11 +20,8 @@ import {
   useMediaQuery,
   useToast,
 } from '@chakra-ui/react';
-import { parseRRule } from '@libs/calendar';
-import { CalendarEvent } from '@prisma/client';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
-import { Event as BigCalendarEvent } from 'react-big-calendar';
+import { useEffect, useState } from 'react';
 import { RRule } from 'rrule';
 
 type Event = {

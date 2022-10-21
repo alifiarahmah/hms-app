@@ -70,10 +70,12 @@ const Login = ({
             body: JSON.stringify(sub),
           }).then((res) => res.json());
         } else {
-          await fetch('/api/user/pwa/subscribe', {
-            method: 'POST',
-            body: JSON.stringify(subscription),
-          }).then((res) => res.json());
+          if (subscription) {
+            await fetch('/api/user/pwa/subscribe', {
+              method: 'POST',
+              body: JSON.stringify(subscription),
+            }).then((res) => res.json());
+          }
         }
         toast({
           title: 'Login berhasil',

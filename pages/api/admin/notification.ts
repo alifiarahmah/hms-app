@@ -1,42 +1,16 @@
-import webPush from '@libs/pwa/webPush';
+import { MethodNotAllowedError } from '@errors/server';
 import ErrorHandler from '@libs/server/errorHandler';
 import serialize from '@libs/server/serialize';
-import prisma from '@services/prisma';
+import { loadEvents, sendNotification } from '@services/schedule';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const Notification = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
-  const { title, message, target } = req.body;
+  if (req.method !== 'POST') throw new MethodNotAllowedError();
 
-  let q: any;
-  if (target) {
-    q = {
-      where: {
-        user: {
-          nim: {
-            in: target,
-          },
-        },
-      },
-    };
-  } else {
-    q = {};
-  }
+  await loadEvents();
+  await sendNotification();
 
-  const userSubscription = await prisma.userSubscription.findMany(q);
-  const subscriptions = userSubscription.map((sub) => {
-    return {
-      endpoint: sub.endpoint,
-      keys: {
-        p256dh: sub.p256dh,
-        auth: sub.auth,
-      },
-    };
-  });
-  const promise = subscriptions.map((sub) => {
-    return webPush.sendNotification(sub, JSON.stringify({ title, message }));
-  });
-  await Promise.all(promise);
-  res.json(serialize('Notification sent', subscriptions.length));
+  res.json(serialize('Send notification success', {}));
 });
 
 export default Notification;

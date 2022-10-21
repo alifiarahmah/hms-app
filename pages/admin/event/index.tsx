@@ -1,6 +1,7 @@
 import {
   Button,
   calc,
+  Divider,
   Flex,
   Heading,
   Show,
@@ -17,6 +18,7 @@ import { useEffect, useState } from 'react';
 import EventModal from 'components/admin/eventModal';
 import { useRouter } from 'next/router';
 import FileInput from 'components/fileInput';
+import { MdUpload } from 'react-icons/md';
 
 type Event = {
   uid?: string;
@@ -129,25 +131,30 @@ const AdminEvent = () => {
   }, [toast]);
 
   return (
-    <Flex flexDir={'row'} w="100%" bg="primary.100">
+    <Flex flexDir={'row'} w="calc(100vw - 67.5px)" bg="primary.100">
       <Sidebar />
-      <EventModal
-        isOpen={isOpen}
-        onClose={handleSubmit}
-        event={event}
-        setEvent={setEvent}
-        isEdit={isEdit}
-      />
-      <Flex flexDir="column" w="100%">
+
+      <Flex px={2} flexDir="column" w="100%" bg="primary.100">
+        <EventModal
+          isOpen={isOpen}
+          onClose={handleSubmit}
+          event={event}
+          setEvent={setEvent}
+          isEdit={isEdit}
+        />
         <Flex p={2} gap={4}>
           <Heading>Calendar</Heading>
           <Spacer />
-          <FileInput onChange={handleInputICS}>Upload ICS File</FileInput>
+          <FileInput onChange={handleInputICS}>
+            <MdUpload />
+            ICS
+          </FileInput>
           <Button colorScheme="primary" onClick={() => handleOpenModal(blankEvent, false)}>
             Add Event
           </Button>
         </Flex>
-        <Flex flexDir={smallScreen ? 'column' : 'row'} w="100%" gap="48px">
+        <Divider borderColor="primary.500" mb={2} />
+        <Flex flexDir={smallScreen ? 'column' : 'row'} w="calc(100vw - 67.5px)" gap="48px">
           {!smallScreen ? (
             <Calendar
               onNavigate={(date) => setDate(date)}
