@@ -22,16 +22,16 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    heading: 'Livvic, sans-serif',
-    body: 'Harmattan, sans-serif',
+    heading: 'Gurindam, sans-serif',
+    body: 'Livvic, sans-serif',
   },
   styles: {
     global: {
       body: {
+        fontweight: '400',
         fontSize: '1.25rem',
-        color: 'black.500',
+        color: 'primary.500',
         bg: 'primary.100',
-        bgImage: 'url("/VSTOCKS/PATTERN/PATTERN5_edited.png")',
         bgRepeat: 'repeat',
         bgSize: 'cover',
       },
@@ -44,6 +44,13 @@ export const theme = extendTheme({
     Container: {
       baseStyle: {
         maxWidth: 'auto',
+      },
+    },
+    Link: {
+      baseStyle: {
+        _hover: {
+          textDecoration: 'none',
+        },
       },
     },
     Input: {
