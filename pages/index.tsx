@@ -1,7 +1,8 @@
 import { Center, Flex, Heading, Image, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
-import { InfoCard, MadingCard } from 'components/cards';
+import { InfoCard, MadingCard, TimelineCard } from 'components/cards';
 import Navbar from 'components/navbar';
 import { useSession } from 'next-auth/react';
+import Calendar from 'react-calendar';
 
 const Index = () => {
   const [isSmallScreen] = useMediaQuery('(max-width: 900px)');
@@ -13,9 +14,9 @@ const Index = () => {
       {/* TODO: background filter blur + brightness 0.5 */}
       <Center
         w="100%"
-        h={600}
+        h={720}
         bg="transparent"
-        backdropFilter="auto"
+        backdropFilter="blur(10px)"
         bgImage={'images/sipil1.jpg'}
         bgPosition="center"
         bgSize="cover"
@@ -32,11 +33,20 @@ const Index = () => {
         <Flex
           display={isSmallScreen && status === 'unauthenticated' ? 'none' : 'flex'}
           bg="primary.300"
-          minW="300px"
-          color="primary.100"
-          p={4}
+          minW="380px"
+          p={8}
+          py={8}
+          flexDir="column"
+          gap={8}
         >
-          <Heading>Timeline</Heading>
+          <Calendar />
+          {new Array(6).fill(0).map((_, i) => (
+            <TimelineCard
+              title="test"
+              date={`${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`}
+              key={i}
+            />
+          ))}
         </Flex>
         {/* Information and Mading */}
         <Flex flexDir="column" w="100%">
@@ -61,7 +71,7 @@ const Index = () => {
             <Heading>Mading</Heading>
             <SimpleGrid minChildWidth={'300px'} spacing={10} mt={4}>
               {new Array(6).fill(0).map((_, i) => (
-                <MadingCard key={i} image="images/sipil1.jpg" link="/" />
+                <MadingCard key={i} image="images/sipil1.jpg" />
               ))}
             </SimpleGrid>
           </Flex>

@@ -38,10 +38,9 @@ export const InfoCard = ({ image, date, title, description, link }: InfoCardProp
 
 interface MadingCardProps {
   image: string;
-  link: string;
 }
 
-export const MadingCard = ({ image, link }: MadingCardProps) => {
+export const MadingCard = ({ image }: MadingCardProps) => {
   return (
     <Flex
       w="100%"
@@ -52,8 +51,38 @@ export const MadingCard = ({ image, link }: MadingCardProps) => {
       _hover={{ boxShadow: 'lg', cursor: 'pointer' }}
       flexDir="column"
     >
-      <Link>
+      <Link href="/mading">
         <Image src={image} alt="mading" w="100%" h="100%" />
+      </Link>
+    </Flex>
+  );
+};
+
+interface TimelineCardProps {
+  title: string;
+  date: string;
+}
+
+export const TimelineCard = ({ title, date }: TimelineCardProps) => {
+  return (
+    <Flex
+      w="100%"
+      minH="75px"
+      bg="primary.700"
+      color="primary.100"
+      borderRadius="lg"
+      boxShadow="md"
+      _hover={{ boxShadow: 'lg', cursor: 'pointer' }}
+      flexDir="column"
+      p={4}
+    >
+      <Text fontSize="sm" color="gray.100">
+        {date}
+      </Text>
+      <Link href="/calendar">
+        <Heading fontSize="lg" mt={2}>
+          {title}
+        </Heading>
       </Link>
     </Flex>
   );
