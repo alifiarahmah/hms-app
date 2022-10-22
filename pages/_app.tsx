@@ -12,7 +12,7 @@ import '@fontsource/livvic/400.css';
 import '@fontsource/livvic/700.css';
 import SessionGuard from 'components/provider/sessionGuard';
 
-export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps<any>) {
   return (
     <SessionProvider session={session}>
       <ChakraProvider theme={theme}>
