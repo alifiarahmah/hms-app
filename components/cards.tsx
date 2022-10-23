@@ -1,6 +1,6 @@
 // Create a card with image, date and title
 
-import { Box, Button, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Image, Spacer, Text } from '@chakra-ui/react';
 import Link from 'components/link';
 
 interface InfoCardProps {
@@ -60,10 +60,12 @@ export const MadingCard = ({ image }: MadingCardProps) => {
 
 interface TimelineCardProps {
   title: string;
-  date: string;
+  start: Date;
+  end: Date;
+  description: string;
 }
 
-export const TimelineCard = ({ title, date }: TimelineCardProps) => {
+export const TimelineCard = ({ title, start, end, description }: TimelineCardProps) => {
   return (
     <Flex
       w="100%"
@@ -72,18 +74,27 @@ export const TimelineCard = ({ title, date }: TimelineCardProps) => {
       color="primary.100"
       borderRadius="lg"
       boxShadow="md"
-      _hover={{ boxShadow: 'lg', cursor: 'pointer' }}
+      _hover={{ boxShadow: 'lg' }}
       flexDir="column"
       p={4}
+      gap={2}
+      wordBreak={'break-all'}
     >
-      <Text fontSize="sm" color="gray.100">
-        {date}
+      <Flex>
+        <Link href="/calendar">
+          <Text fontSize="lg" fontWeight="semibold">
+            {title.toUpperCase()}
+          </Text>
+        </Link>
+        <Spacer />
+        <Text fontSize="sm" color="gray.100">
+          {/* FIXME: ganti format jadi HH:MM aja */}
+          {start.toLocaleTimeString()} - {end.toLocaleTimeString()}
+        </Text>
+      </Flex>
+      <Text textAlign="justify" fontSize="sm" color="gray.100">
+        {description}
       </Text>
-      <Link href="/calendar">
-        <Heading fontSize="lg" mt={2}>
-          {title}
-        </Heading>
-      </Link>
     </Flex>
   );
 };

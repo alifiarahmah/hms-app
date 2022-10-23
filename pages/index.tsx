@@ -43,7 +43,9 @@ const Index = () => {
           {new Array(6).fill(0).map((_, i) => (
             <TimelineCard
               title="test"
-              date={`${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`}
+              description="Pariatur esse est laboris aute. Ullamco commodo elit Lorem ex veniam elit nulla enim non quis nulla. Sint dolore Lorem aliqua aliqua pariatur tempor esse Lorem ex. Exercitation velit commodo exercitation veniam culpa proident et pariatur incididunt laborum eu consequat nisi. Anim tempor quis ea ullamco do sit consequat irure culpa ipsum ex labore."
+              start={new Date()}
+              end={new Date()}
               key={i}
             />
           ))}
