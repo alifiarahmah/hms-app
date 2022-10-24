@@ -5,9 +5,7 @@ import {
   Divider,
   Drawer,
   DrawerBody,
-  DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   Flex,
@@ -58,7 +56,7 @@ const Navbar = () => {
                     Calendar
                   </Link>
                 )}
-                <Link href="/" fontWeight={'bold'}>
+                <Link href="/information" fontWeight={'bold'}>
                   Information
                 </Link>
                 <Link href="/" fontWeight={'bold'}>
@@ -128,7 +126,9 @@ const Navbar = () => {
             </Center>
           ) : null}
           <Center>
-            <Link color="primary.100">Information</Link>
+            <Link href="/information" color="primary.100">
+              Information
+            </Link>
           </Center>
           <Center>
             <Link color="primary.100">Mading</Link>
