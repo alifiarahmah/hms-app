@@ -1,5 +1,6 @@
-import { Center, Flex, Heading, Image, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Image, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { InfoCard, MadingCard, TimelineCard } from 'components/cards';
+import Link from 'components/link';
 import Navbar from 'components/navbar';
 import { useSession } from 'next-auth/react';
 import Calendar from 'react-calendar';
@@ -10,22 +11,28 @@ const Index = () => {
   return (
     <>
       <Navbar />
-      {/* Hero */}
-      {/* TODO: background filter blur + brightness 0.5 */}
-      <Center
-        w="100%"
-        h={720}
-        bg="transparent"
-        backdropFilter="blur(10px)"
-        bgImage={'images/sipil1.jpg'}
-        bgPosition="center"
-        bgSize="cover"
-        px={12}
-      >
-        <Heading textAlign={'center'} size="3xl" color="primary.100">
+      <Box position="relative" w="100%" h={720}>
+        <Image
+          src="/images/sipil1.jpg"
+          w="100%"
+          h="100%"
+          objectFit="cover"
+          alt="GedungSipil"
+          filter="blur(3.5px) brightness(50%)"
+        />
+        <Heading
+          textAlign={'center'}
+          size="3xl"
+          color="primary.100"
+          position="absolute"
+          top="50%"
+          left="50%"
+          zIndex={999}
+          transform="translate(-50%, -50%)"
+        >
           Himpunan Mahasiswa Sipil
         </Heading>
-      </Center>
+      </Box>
 
       {/* Main Flex */}
       <Flex w="100%" flexDir={isSmallScreen ? 'column' : 'row-reverse'}>
@@ -33,11 +40,13 @@ const Index = () => {
         <Flex
           display={isSmallScreen && status === 'unauthenticated' ? 'none' : 'flex'}
           bg="primary.300"
-          minW="380px"
           p={8}
           py={8}
           flexDir="column"
-          gap={8}
+          gap={6}
+          maxWidth={isSmallScreen ? '100%' : '40%'}
+          alignItems="center"
+          bgImage="/images/bg_green.png"
         >
           <Calendar />
           {new Array(6).fill(0).map((_, i) => (
@@ -49,13 +58,22 @@ const Index = () => {
               key={i}
             />
           ))}
+          <Link textAlign="right" alignSelf="flex-end" href="/calendar">
+            <Text textDecoration="underline">more on calendar</Text>
+          </Link>
         </Flex>
         {/* Information and Mading */}
-        <Flex flexDir="column" w="100%">
+        <Flex flexDir="column">
           {/* Information */}
-          <Flex p={8} flexDir="column" bg="pink.100" color="black.300">
+          <Flex
+            p={8}
+            flexDir="column"
+            bg="pink.100"
+            color="black.300"
+            backgroundImage={'/images/bg_pink.png'}
+          >
             <Heading>Information</Heading>
-            <SimpleGrid minChildWidth={'300px'} spacing={10} mt={4}>
+            <SimpleGrid minChildWidth={'300px'} spacing={10} mt={8} mb={6}>
               {new Array(6).fill(0).map((_, i) => (
                 <InfoCard
                   key={i}
@@ -67,15 +85,23 @@ const Index = () => {
                 />
               ))}
             </SimpleGrid>
+            <Link alignSelf="flex-end" href="/information">
+              <Text textDecoration="underline">more on information</Text>
+            </Link>
           </Flex>
           {/* Mading */}
-          <Flex p={8} flexDir="column">
+          <Flex p={8} flexDir="column" bgImage="/images/bg_krem.png" h="100%">
             <Heading>Mading</Heading>
-            <SimpleGrid minChildWidth={'300px'} spacing={10} mt={4}>
+            <SimpleGrid minChildWidth={'300px'} spacing={10} mt={8} mb={6}>
               {new Array(6).fill(0).map((_, i) => (
                 <MadingCard key={i} image="images/sipil1.jpg" />
               ))}
             </SimpleGrid>
+            <Link href="/mading">
+              <Text textDecoration="underline" textAlign="right">
+                more on mading
+              </Text>
+            </Link>
           </Flex>
         </Flex>
         {/* Footer */}

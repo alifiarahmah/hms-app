@@ -48,18 +48,18 @@ const Navbar = () => {
                 <Link href="/" fontWeight={'bold'}>
                   Home
                 </Link>
-                <Link href="/" fontWeight={'bold'}>
+                <Link href="/about" fontWeight={'bold'}>
                   About
                 </Link>
                 {status === 'authenticated' && (
-                  <Link href="/" fontWeight={'bold'}>
+                  <Link href="/calendar" fontWeight={'bold'}>
                     Calendar
                   </Link>
                 )}
                 <Link href="/information" fontWeight={'bold'}>
                   Information
                 </Link>
-                <Link href="/" fontWeight={'bold'}>
+                <Link href="/mading" fontWeight={'bold'}>
                   Mading
                 </Link>
                 <Divider />
@@ -115,14 +115,20 @@ const Navbar = () => {
       ) : (
         <>
           <Center>
-            <Link color="primary.100">Home</Link>
+            <Link href="/" color="primary.100">
+              Home
+            </Link>
           </Center>
           <Center>
-            <Link color="primary.100">About</Link>
+            <Link href="/about" color="primary.100">
+              About
+            </Link>
           </Center>
           {status === 'authenticated' ? (
             <Center>
-              <Link color="primary.100">Calendar</Link>
+              <Link href="/calendar" color="primary.100">
+                Calendar
+              </Link>
             </Center>
           ) : null}
           <Center>
@@ -131,7 +137,9 @@ const Navbar = () => {
             </Link>
           </Center>
           <Center>
-            <Link color="primary.100">Mading</Link>
+            <Link href="/mading" color="primary.100">
+              Mading
+            </Link>
           </Center>
           <Center py={3}>
             <Divider orientation="vertical" />

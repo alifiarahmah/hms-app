@@ -28,6 +28,17 @@ export const theme = extendTheme({
   },
   styles: {
     global: {
+      '*': {
+        '&::-webkit-scrollbar': {
+          w: '2.5',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: '#f2e1cd',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#175442',
+        },
+      },
       body: {
         fontweight: '400',
         fontSize: '1.25rem',
