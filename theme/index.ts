@@ -21,6 +21,9 @@ export const theme = extendTheme({
       100: '#f9c3b2',
       300: '#b85a6f',
     },
+    brown: {
+      300: '#975B29',
+    },
   },
   fonts: {
     heading: 'Gurindam, sans-serif',

@@ -21,7 +21,16 @@ export const InfoCard = ({ image, date, title, description, link }: InfoCardProp
       _hover={{ boxShadow: 'lg' }}
       flexDir="column"
     >
-      <Image src={image} alt={title} w="100%" h="100%" />
+      {/* box sized image */}
+      <Box w="100%" h="200px" overflow="hidden" borderRadius="lg">
+        <Image
+          src={image !== '' ? image : '/images/sipil1.jpg'}
+          alt={title}
+          w="100%"
+          h="100%"
+          objectFit="cover"
+        />
+      </Box>
       <Flex flexDir="column" p={4}>
         <Text fontSize="sm" color="gray.500">
           {date}

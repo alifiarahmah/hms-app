@@ -1,13 +1,63 @@
-import { Box, Flex, Heading, Text, Image, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Image,
+  SimpleGrid,
+  useMediaQuery,
+  Center,
+} from '@chakra-ui/react';
+import { CalendarEvent, Image as ImageType, ImagePost, Post } from '@prisma/client';
 import { InfoCard, MadingCard, TimelineCard } from 'components/cards';
 import Link from 'components/link';
 import Navbar from 'components/navbar';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
+
+type PostWithImages = Post & {
+  images: ImagePost[];
+};
 
 const Index = () => {
   const [isSmallScreen] = useMediaQuery('(max-width: 900px)');
-  const { data: session, status } = useSession();
+  const { status } = useSession();
+  const [posts, setPosts] = useState<PostWithImages[]>([]);
+  const [madings, setMadings] = useState<ImageType[]>([]);
+  const [timelines, setTimelines] = useState<CalendarEvent[]>([]);
+
+  useEffect(() => {
+    fetch('/api/user/post', {
+      method: 'GET',
+    }).then((res) => {
+      res.json().then(({ data }) => {
+        setPosts(data);
+      });
+    });
+
+    fetch('/api/user/mading', {
+      method: 'GET',
+    }).then((res) => {
+      res.json().then(({ data }) => {
+        setMadings(data);
+      });
+    });
+
+    fetch('/api/user/calendar', {
+      method: 'GET',
+    }).then((res) => {
+      res.json().then(({ data }: { data: CalendarEvent[] }) => {
+        setTimelines(
+          data.filter((timeline) => new Date(timeline.start).getDate() == new Date().getDate())
+        );
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log({ madings, posts, timelines });
+  }, [madings, posts, timelines]);
   return (
     <>
       <Navbar />
@@ -49,21 +99,46 @@ const Index = () => {
           bgImage="/images/bg_green.png"
         >
           <Calendar />
-          {new Array(6).fill(0).map((_, i) => (
-            <TimelineCard
-              title="test"
-              description="Pariatur esse est laboris aute. Ullamco commodo elit Lorem ex veniam elit nulla enim non quis nulla. Sint dolore Lorem aliqua aliqua pariatur tempor esse Lorem ex. Exercitation velit commodo exercitation veniam culpa proident et pariatur incididunt laborum eu consequat nisi. Anim tempor quis ea ullamco do sit consequat irure culpa ipsum ex labore."
-              start={new Date()}
-              end={new Date()}
-              key={i}
-            />
-          ))}
+          {status === 'authenticated' ? (
+            timelines.length > 0 ? (
+              timelines.map((timeline, i) => (
+                <TimelineCard
+                  title={timeline.title}
+                  description={timeline.description || ''}
+                  start={new Date(timeline.start)}
+                  end={new Date(timeline.end)}
+                  key={i}
+                />
+              ))
+            ) : (
+              <Text color="primary.100" fontWeight="bold">
+                Tidak ada agenda hari ini
+              </Text>
+            )
+          ) : (
+            // box with dark background then text "Silahkan login untuk melihat agenda"
+            <Center
+              w="100%"
+              h={200}
+              bg="rgba(255,255,255,0.5)"
+              borderRadius={10}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              boxShadow="0px 0px 10px 0px rgba(0,0,0,0.75)"
+              onClick={() => {
+                window.location.href = '/user/login';
+              }}
+            >
+              Silahkan login untuk melihat agenda
+            </Center>
+          )}
           <Link textAlign="right" alignSelf="flex-end" href="/calendar">
             <Text textDecoration="underline">more on calendar</Text>
           </Link>
         </Flex>
         {/* Information and Mading */}
-        <Flex flexDir="column">
+        <Flex flexDir="column" w="100%">
           {/* Information */}
           <Flex
             p={8}
@@ -74,14 +149,18 @@ const Index = () => {
           >
             <Heading>Information</Heading>
             <SimpleGrid minChildWidth={'300px'} spacing={10} mt={8} mb={6}>
-              {new Array(6).fill(0).map((_, i) => (
+              {posts.slice(0, 6).map((post) => (
                 <InfoCard
-                  key={i}
-                  image="images/sipil1.jpg"
-                  title="test"
-                  description="test"
-                  link="/"
-                  date={new Date().toDateString()}
+                  key={post.id}
+                  image={
+                    post.images.length > 0
+                      ? `https://drive.google.com/uc?export=view&id=${post.images[0].imageId}`
+                      : ''
+                  }
+                  title={post.title}
+                  description={post.content.replace(/(<([^>]+)>)/gi, '').substring(0, 100)}
+                  link={`/post/${post.id}`}
+                  date={new Date(post.createdAt).toDateString()}
                 />
               ))}
             </SimpleGrid>
@@ -93,8 +172,11 @@ const Index = () => {
           <Flex p={8} flexDir="column" bgImage="/images/bg_krem.png" h="100%">
             <Heading>Mading</Heading>
             <SimpleGrid minChildWidth={'300px'} spacing={10} mt={8} mb={6}>
-              {new Array(6).fill(0).map((_, i) => (
-                <MadingCard key={i} image="images/sipil1.jpg" />
+              {madings.slice(0, 6).map((mading) => (
+                <MadingCard
+                  key={mading.id}
+                  image={`https://drive.google.com/uc?export=view&id=${mading.id}`}
+                />
               ))}
             </SimpleGrid>
             <Link href="/mading">

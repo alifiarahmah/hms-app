@@ -20,8 +20,10 @@ model Post {
 }
 
 model Tag {
-  name  String @id
-  posts Post[]
+  name    String  @id
+  posts   Post[]
+  images  Image[]
+  imageId String?
 }
 
 model ImagePost {
@@ -36,8 +38,8 @@ model ImagePost {
 model Image {
   id        String      @id
   title     String
-  content   String
   ImagePost ImagePost[]
+  tags      Tag[]
   createdAt DateTime    @default(now())
 }
 

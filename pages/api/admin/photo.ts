@@ -17,7 +17,7 @@ PhotoRoute.post(
       },
       res: NextApiResponse
     ) => {
-      const { title, content } = UploadPhotoSchema.parse(req.body);
+      const { title } = UploadPhotoSchema.parse(req.body);
       const { file } = req;
       if (!file) throw new FileIsRequiredError();
 
@@ -32,7 +32,6 @@ PhotoRoute.post(
         data: {
           id: fileId,
           title,
-          content: content || '',
         },
       });
 

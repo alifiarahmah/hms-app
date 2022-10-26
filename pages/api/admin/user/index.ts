@@ -1,4 +1,4 @@
-import { MethodNotAllowedError } from '@errors/server';
+import { BadRequestError, MethodNotAllowedError } from '@errors/server';
 import ErrorHandler from '@libs/server/errorHandler';
 import serialize from '@libs/server/serialize';
 import prisma from '@services/prisma';
@@ -19,15 +19,19 @@ const User = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (req.method === 'POST') {
     const { name, email, password: unhashed, nim } = CreateSingleUserSchema.parse(req.body);
     const password = bcrypt.hashSync(unhashed, parseInt(process.env.BCRYPT_SALT_ROUNDS));
-    const user = await prisma.user.create({
-      data: {
-        nim,
-        name,
-        email,
-        password,
-      },
-    });
-    res.status(200).json(serialize('Create specific user successful', user));
+    try {
+      const user = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password,
+          nim,
+        },
+      });
+      res.status(200).json(serialize('Create user successful', user));
+    } catch {
+      throw new BadRequestError('Username or email already exists');
+    }
   } else {
     throw new MethodNotAllowedError();
   }
