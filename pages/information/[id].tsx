@@ -8,9 +8,9 @@ export const Information = () => {
   const { id } = router.query;
 
   return (
-    <Layout>
-      <Flex minH="100vh">
-        <Box px={5} py={10} w="75vw">
+    <Layout bg="/images/bg_pattern.png">
+      <Flex minH="100vh" flexDirection={{ base: 'column', lg: 'row' }}>
+        <Box px={5} py={10} w={{ lg: '75vw' }}>
           <Text fontFamily="Gurindam" fontSize="sm" color="#175442">
             Kesekjenan / Judul
           </Text>
@@ -51,7 +51,7 @@ export const Information = () => {
             venenatis
           </Text>
         </Box>
-        <Box px={5} py={10} bg="#F5D2BF" w="25vw">
+        <Box px={5} py={10} bgImage="/images/bg_pink.png" bgColor="#F5D2BF" w={{ lg: '25vw' }}>
           <Heading mb={3} fontSize="md">
             Newest Post
           </Heading>
