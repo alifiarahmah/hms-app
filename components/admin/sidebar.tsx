@@ -54,11 +54,11 @@ const Sidebar = () => {
         bg="primary.500"
         color="white"
         px={2}
-        position={isOpen ? 'absolute' : 'fixed'}
+        position={isOpen ? 'fixed' : 'fixed'}
         as={motion.div}
         transition="ease-out 0.2s"
         w={sidebarSize}
-        h={'120vh'}
+        h={'100%'}
         zIndex={100}
       >
         {isOpen ? (
