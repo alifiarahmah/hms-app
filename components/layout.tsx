@@ -1,11 +1,16 @@
 import { Box } from '@chakra-ui/react';
 import Navbar from 'components/navbar';
 
-const Layout = ({ children }: React.PropsWithChildren<{}>) => {
+export interface LayoutProps {
+  bg?: string;
+  children: React.ReactNode;
+}
+
+const Layout: React.FC<LayoutProps> = ({ bg, children }) => {
   return (
     <>
       <Navbar />
-      <Box>{children}</Box>
+      <Box bgImage={bg ?? 'transparent'}>{children}</Box>
     </>
   );
 };
