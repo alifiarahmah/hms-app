@@ -124,7 +124,6 @@ const Login = () => {
               background="white"
               color="primary.500"
               placeholder="Enter your NIM"
-              type="number"
               onChange={(e) => setFormData({ ...formData, nim: e.target.value })}
             />
           </InputGroup>

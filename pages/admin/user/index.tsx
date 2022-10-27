@@ -74,11 +74,11 @@ const AdminUser = () => {
   }
 
   return (
-    <Flex flexDir="row" minW="120vw" bg="primary.100">
+    <Flex flexDir="row" minW="90vw" bg="primary.100">
       <CreateUserModal isOpen={isOpen} onClose={handleCloseCreateUser} />
       <WarningModal />
       <Sidebar />
-      <Flex minW="100vw" maxH="100vh" gap={2} px={2} flexDir="column">
+      <Flex minW="90vw" maxH="100vh" gap={2} px={2} flexDir="column">
         <Flex maxH="15vh" gap={2} pt={4} flexDir="column" position="sticky">
           <Flex gap={8}>
             <Heading color="primary.500">Users</Heading>

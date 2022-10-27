@@ -1,62 +1,183 @@
-import { BadRequestError } from '@errors/server';
+import { BadRequestError, FileIsRequiredError, InternalServerError } from '@errors/server';
+import { AsyncRoute } from '@libs/server/asyncWrapper';
 import ErrorHandler from '@libs/server/errorHandler';
+import { BuildFileMiddleware, BuildRoute } from '@libs/server/nextConnect';
 import serialize from '@libs/server/serialize';
-import { Tag } from '@prisma/client';
+import { uploadFile, deleteFile } from '@services/drive';
 import prisma from '@services/prisma';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const Mading = ErrorHandler(async (req, res) => {
-  if (req.method === 'GET') {
-    // get image where dont have image post
-    const mading = await prisma.image.findMany({
-      include: {
-        ImagePost: true,
-        tags: true,
+const Mading = BuildRoute();
+
+Mading.get(
+  ErrorHandler(async (req, res) => {
+    const mading = await prisma.mading.findMany({});
+    res.status(200).json(serialize('Get Madings successful', mading));
+  })
+);
+
+Mading.post(
+  BuildFileMiddleware('single'),
+  AsyncRoute(
+    async (
+      req: NextApiRequest & {
+        file: Express.Multer.File;
       },
-    });
-    res.status(200).json(
-      serialize(
-        'Get Madings successful',
-        mading.filter((m) => m.ImagePost.length === 0)
-      )
-    );
-  } else if (req.method === 'POST') {
-    const { title, tags, image } = req.body;
+      res: NextApiResponse
+    ) => {
+      const { file } = req;
+      if (!file) throw new FileIsRequiredError();
+      const { title, tag } = req.body;
 
-    if (tags) {
-      // Check if tags already available
-      const tagsData = await prisma.tag.findMany({});
-
-      // throw an error if tags unavailable
-      for (const tag of tags) {
-        if (!tagsData.find((t) => t.name === tag)) {
-          throw new BadRequestError(`Tag ${tag} is not available`);
-        }
-      }
-    }
-
-    const mading = await prisma.image.create({
-      data: {
-        title,
-        id: image,
-      },
-    });
-
-    // connect tags to mading
-    if (tags) {
-      await prisma.image.update({
+      // check if tag exist
+      const tagExist = await prisma.tag.findFirst({
         where: {
-          id: mading.id,
-        },
-        data: {
-          tags: {
-            connect: tags.map((tag: Tag) => ({ name: tag })),
-          },
+          name: tag,
         },
       });
-    }
 
-    res.status(200).json(serialize('Create specific post successful', mading));
-  }
-});
+      if (!tagExist) throw new BadRequestError('Tag not found');
+
+      const fileId = await uploadFile(
+        file,
+        process.env.IMAGE_FOLDER_ID,
+        title + '_' + Date.now().toString()
+      );
+
+      if (!fileId) throw new InternalServerError('Upload file error');
+      const photo = await prisma.image.create({
+        data: {
+          id: fileId,
+          title,
+        },
+      });
+
+      const mading = await prisma.mading.create({
+        data: {
+          imageId: photo.id,
+          title,
+          tagName: tag,
+        },
+      });
+
+      res.json(serialize('Upload photo success', mading));
+    }
+  )
+);
+
+Mading.put(
+  BuildFileMiddleware('single'),
+  AsyncRoute(
+    async (
+      req: NextApiRequest & {
+        file: Express.Multer.File;
+      },
+      res: NextApiResponse
+    ) => {
+      const { file } = req;
+      const { title, tag, id } = req.body;
+
+      // check if id exist
+      const madingExist = await prisma.mading.findFirst({
+        where: {
+          id,
+        },
+      });
+      if (!madingExist) throw new BadRequestError('Mading not found');
+
+      // check if tag exist
+      const tagExist = await prisma.tag.findFirst({
+        where: {
+          name: tag,
+        },
+      });
+
+      if (!tagExist) throw new BadRequestError('Tag not found');
+
+      if (file) {
+        const fileId = await uploadFile(
+          file,
+          process.env.IMAGE_FOLDER_ID,
+          title + '_' + Date.now().toString()
+        );
+
+        if (!fileId) throw new InternalServerError('Upload file error');
+        const photo = await prisma.image.create({
+          data: {
+            id: fileId,
+            title,
+          },
+        });
+
+        const mading = await prisma.mading.update({
+          where: {
+            id,
+          },
+          data: {
+            imageId: photo.id,
+            title,
+            tagName: tag,
+          },
+        });
+
+        res.json(serialize('Upload photo success', mading));
+      } else {
+        const mading = await prisma.mading.update({
+          where: {
+            id,
+          },
+          data: {
+            title,
+            tagName: tag,
+          },
+        });
+
+        res.json(serialize('Upload photo success', mading));
+      }
+    }
+  )
+);
+
+Mading.delete(
+  AsyncRoute(async (req: NextApiRequest, res: NextApiResponse) => {
+    console.log(req.body);
+    const { id } = req.body;
+
+    // check if id exist
+    const madingExist = await prisma.mading.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!madingExist) throw new BadRequestError('Mading not found');
+
+    const [mading, image] = await prisma.$transaction([
+      prisma.mading.delete({
+        where: {
+          id,
+        },
+      }),
+      prisma.image.delete({
+        where: {
+          id: madingExist.imageId,
+        },
+      }),
+    ]);
+
+    if (!mading || !image) throw new InternalServerError('Delete mading error');
+
+    // delete image from drive
+    deleteFile(image.id);
+
+    res.json(serialize('Delete mading success', mading));
+  })
+);
 
 export default Mading;
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};

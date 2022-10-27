@@ -209,6 +209,40 @@ const Navbar = () => {
                       },
                     }}
                   >
+                    {session?.user?.nim === 'admin' ? (
+                      <MenuItem
+                        sx={{
+                          bg: 'transparent',
+                          _active: {
+                            bg: 'transparent',
+                          },
+                          _focus: {
+                            bg: 'transparent',
+                          },
+                          _hover: {
+                            bg: 'transparent',
+                          },
+                        }}
+                      >
+                        <Button
+                          sx={{
+                            bg: 'transparent',
+                            _active: {
+                              bg: 'transparent',
+                            },
+                            _focus: {
+                              bg: 'transparent',
+                            },
+                            _hover: {
+                              bg: 'transparent',
+                            },
+                          }}
+                          onClick={() => router.push('/admin/user')}
+                        >
+                          Admin Page
+                        </Button>
+                      </MenuItem>
+                    ) : null}
                     <MenuItem
                       sx={{
                         bg: 'transparent',

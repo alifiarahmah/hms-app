@@ -57,6 +57,23 @@ const Post = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     res.status(200).json(serialize('Create specific post successful', post));
+  } else if (req.method === 'DELETE') {
+    const { id } = req.body;
+    // check if exists
+    let post = await prisma.post.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    if (!post) throw new BadRequestError('Post not found');
+
+    post = await prisma.post.delete({
+      where: {
+        id,
+      },
+    });
+    res.status(200).json(serialize('Delete specific post successful', post));
   } else {
     throw new MethodNotAllowedError();
   }

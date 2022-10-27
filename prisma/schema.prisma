@@ -43,13 +43,12 @@ model Image {
 }
 
 model Mading {
-  imageId String
+  id      String @id @default(cuid())
+  imageId String @unique
   tagName String
   title   String
   image   Image  @relation(fields: [imageId], references: [id])
   tag     Tag    @relation(fields: [tagName], references: [name])
-
-  @@id([imageId, tagName])
 }
 
 model Account {
