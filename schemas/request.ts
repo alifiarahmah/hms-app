@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 export const UploadPhotoSchema = z.object({
   title: z.string(),
-  content: z.string().optional(),
 });
 
 export type UploadPhotoReqType = z.infer<typeof UploadPhotoSchema>;

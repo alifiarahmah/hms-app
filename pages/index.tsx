@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   Center,
 } from '@chakra-ui/react';
-import { CalendarEvent, Image as ImageType, ImagePost, Post } from '@prisma/client';
+import { CalendarEvent, Image as ImageType, ImagePost, Mading, Post } from '@prisma/client';
 import { InfoCard, MadingCard, TimelineCard } from 'components/cards';
 import Link from 'components/link';
 import Navbar from 'components/navbar';
@@ -24,7 +24,7 @@ const Index = () => {
   const [isSmallScreen] = useMediaQuery('(max-width: 900px)');
   const { status } = useSession();
   const [posts, setPosts] = useState<PostWithImages[]>([]);
-  const [madings, setMadings] = useState<ImageType[]>([]);
+  const [madings, setMadings] = useState<Mading[]>([]);
   const [timelines, setTimelines] = useState<CalendarEvent[]>([]);
 
   useEffect(() => {
@@ -174,8 +174,8 @@ const Index = () => {
             <SimpleGrid minChildWidth={'300px'} spacing={10} mt={8} mb={6}>
               {madings.slice(0, 6).map((mading) => (
                 <MadingCard
-                  key={mading.id}
-                  image={`https://drive.google.com/uc?export=view&id=${mading.id}`}
+                  key={mading.imageId}
+                  image={`https://drive.google.com/uc?export=view&id=${mading.imageId}`}
                 />
               ))}
             </SimpleGrid>

@@ -61,7 +61,16 @@ export const MadingCard = ({ image }: MadingCardProps) => {
       flexDir="column"
     >
       <Link href="/mading">
-        <Image src={image} alt="mading" w="100%" h="100%" />
+        {/* box sized image */}
+        <Box w="100%" h="200px" overflow="hidden" borderRadius="lg">
+          <Image
+            src={image !== '' ? image : '/images/sipil1.jpg'}
+            alt={image}
+            w="100%"
+            h="100%"
+            objectFit="cover"
+          />
+        </Box>
       </Link>
     </Flex>
   );

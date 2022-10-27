@@ -20,10 +20,9 @@ model Post {
 }
 
 model Tag {
-  name    String  @id
-  posts   Post[]
-  images  Image[]
-  imageId String?
+  name   String   @id
+  posts  Post[]
+  Mading Mading[]
 }
 
 model ImagePost {
@@ -39,8 +38,18 @@ model Image {
   id        String      @id
   title     String
   ImagePost ImagePost[]
-  tags      Tag[]
   createdAt DateTime    @default(now())
+  Mading    Mading[]
+}
+
+model Mading {
+  imageId String
+  tagName String
+  title   String
+  image   Image  @relation(fields: [imageId], references: [id])
+  tag     Tag    @relation(fields: [tagName], references: [name])
+
+  @@id([imageId, tagName])
 }
 
 model Account {
