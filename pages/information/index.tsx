@@ -2,6 +2,7 @@ import { Box, Image, SimpleGrid, Text } from '@chakra-ui/react';
 import DeptNavigation from 'components/dept_navigation';
 import Layout from 'components/layout';
 import Link from 'components/link';
+import Loading from 'components/loading';
 import moment from 'moment';
 import 'moment/locale/id';
 import { useEffect, useState } from 'react';
@@ -42,8 +43,27 @@ export const Information = () => {
         });
       });
     }
-  }, [selectedDept])
+  }, [selectedDept]);
 
+  useEffect(() => {
+    if (ascSort) {
+      const sorted = posts.sort((a, b) => {
+        // b.title - a.title kudunya, TAPI MALAH ERROR
+        return a.title.localeCompare(b.title);
+      });
+      setPosts(sorted);
+    } else {
+      const sorted = posts.sort((a, b) => {
+        // b.title - a.title kudunya, TAPI MALAH ERROR
+        return b.title.localeCompare(a.title);
+      });
+      setPosts(sorted);
+    }
+  }, [ascSort]);
+
+  if (!posts) {
+    return <Loading />;
+  }
   return (
     <Layout bg="/images/bg_krem.png">
       <DeptNavigation

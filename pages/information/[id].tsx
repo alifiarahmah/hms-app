@@ -6,6 +6,7 @@ import 'moment/locale/id';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { IPost } from 'types/post';
+import Loading from 'components/loading';
 
 moment.locale('id');
 
@@ -37,7 +38,7 @@ export const Information = () => {
   }, []);
 
   if (!post) {
-    return <Layout>No post</Layout>;
+    return <Loading />;
   }
   return (
     <Layout bg="/images/bg_pattern.png">
