@@ -103,9 +103,8 @@ export const Mading = () => {
       {/* TODO: make modal bigger */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent w="10000px" alignSelf="center">
-          <ModalCloseButton />
-          <ModalBody p={0}>
+        <ModalContent>
+          <ModalBody p={0} w="fit-content" alignSelf="center">
             <HStack bgImage="/images/bg_pink.png">
               <Box
                 h="80vh"
