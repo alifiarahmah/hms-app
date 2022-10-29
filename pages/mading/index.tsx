@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
   Heading,
@@ -12,29 +13,89 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { MadingCard } from 'components/cards';
 import DeptNavigation from 'components/dept_navigation';
 import Layout from 'components/layout';
-import { useState } from 'react';
+import Loading from 'components/loading';
+import { useEffect, useState } from 'react';
+
+interface Mading {
+  id: string;
+  imageId: string;
+  tagName: string;
+  title: string;
+}
 
 export const Mading = () => {
   const [selectedDept, setSelectedDept] = useState('all');
-  const [selectedPostId, setSelectedPostId] = useState(0);
+  const [selectedPostId, setSelectedPostId] = useState('');
+  const [ascSort, setAscSort] = useState(false);
+  const [fullMading, setFullMading] = useState<Mading[]>([]);
+  const [mading, setMading] = useState<Mading[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleOpen = (id: number) => {
+  const handleOpen = (id: string) => {
     setSelectedPostId(id);
     onOpen();
   };
 
+  useEffect(() => {
+    fetch('/api/user/mading', {
+      method: 'GET',
+    }).then((res) => {
+      res.json().then(({ data }) => {
+        setMading(data);
+        setFullMading(data);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedDept == 'all') {
+      setMading(fullMading);
+    } else {
+      setMading(
+        fullMading.filter((item) => item.tagName.toLowerCase() == selectedDept.toLowerCase())
+      );
+    }
+  }, [selectedDept]);
+
+  useEffect(() => {
+    if (ascSort) {
+      const sorted = mading.sort((a, b) => {
+        // b.title - a.title kudunya, TAPI MALAH ERROR
+        return a.title.localeCompare(b.title);
+      });
+      setMading(sorted);
+    } else {
+      const sorted = mading.sort((a, b) => {
+        // b.title - a.title kudunya, TAPI MALAH ERROR
+        return b.title.localeCompare(a.title);
+      });
+      setMading(sorted);
+    }
+  }, [ascSort]);
+
+  if (!mading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Layout bg="/images/bg_krem.png">
-        <DeptNavigation selectedDept={selectedDept} setSelectedDept={setSelectedDept} />
+        <DeptNavigation
+          selectedDept={selectedDept}
+          setSelectedDept={setSelectedDept}
+          ascSort={ascSort}
+          setAscSort={setAscSort}
+        />
         <SimpleGrid p={7} columns={{ base: 1, sm: 2, md: 3, lg: 4 }} rowGap={5} columnGap={5}>
-          {Array.from({ length: 20 }).map((_, i) => (
-            <Box key="" onClick={() => handleOpen(i)} bg="white" color="#1F1B1F">
-              <Image src="http://source.unsplash.com/random/300x200" alt="" h="200px" />
-            </Box>
+          {mading.map((item) => (
+            <MadingCard
+              key={item.id}
+              image={`https://drive.google.com/uc?export=view&id=${item.imageId}`}
+              onClick={() => handleOpen(item.id)}
+            />
           ))}
         </SimpleGrid>
       </Layout>
@@ -42,7 +103,7 @@ export const Mading = () => {
       {/* TODO: make modal bigger */}
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent w="10000px" alignSelf="center">
           <ModalCloseButton />
           <ModalBody p={0}>
             <HStack bgImage="/images/bg_pink.png">

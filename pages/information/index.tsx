@@ -45,12 +45,15 @@ const departements = [
 
 export const Information = () => {
   const [selectedDept, setSelectedDept] = useState('all');
+  const [ascSort, setAscSort] = useState(false);
 
   return (
     <Layout bg="/images/bg_krem.png">
       <DeptNavigation
         selectedDept={selectedDept}
         setSelectedDept={setSelectedDept}
+        ascSort={ascSort}
+        setAscSort={setAscSort}
       />
       <SimpleGrid p={7} columns={{ base: 1, sm: 2, md: 3, lg: 4 }} rowGap={5} columnGap={5}>
         {Array.from({ length: 20 }).map((_, i) => (

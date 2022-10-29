@@ -11,6 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { base64ToUint8Array } from '@libs/util';
+import Layout from 'components/layout';
 import Link from 'components/link';
 import Navbar from 'components/navbar';
 import { signIn } from 'next-auth/react';
@@ -99,10 +100,9 @@ const Login = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <Center bgImage="/images/bg_krem.png" h="100vh" w="100vw">
-        <VStack px={8} w="40%" minWidth="400px">
+    <Layout bg="/images/bg_krem.png">
+      <Flex paddingTop="10%" justifyContent="center" alignItems="center">
+        <VStack px={8}>
           <Heading mb={4} size="2xl" textAlign="center">
             Welcome Back!
           </Heading>
@@ -161,8 +161,8 @@ const Login = () => {
             </Button>
           </Center>
         </VStack>
-      </Center>
-    </>
+      </Flex>
+    </Layout>
   );
 };
 

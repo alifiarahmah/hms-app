@@ -47,9 +47,10 @@ export const InfoCard = ({ image, date, title, description, link }: InfoCardProp
 
 interface MadingCardProps {
   image: string;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
-export const MadingCard = ({ image }: MadingCardProps) => {
+export const MadingCard = ({ image, onClick = () => {} }: MadingCardProps) => {
   return (
     <Flex
       w="100%"
@@ -59,6 +60,7 @@ export const MadingCard = ({ image }: MadingCardProps) => {
       boxShadow="md"
       _hover={{ boxShadow: 'lg', cursor: 'pointer' }}
       flexDir="column"
+      onClick={onClick}
     >
       <Link href="/mading">
         {/* box sized image */}

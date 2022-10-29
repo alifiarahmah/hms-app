@@ -117,7 +117,7 @@ const Navbar = () => {
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>
-      <Image src="/icons/icon-512x512.png" alt="Logo" />
+      <Image src="/icons/icon-512x512.png" alt="Logo" objectFit="contain" w={16} />
       <Spacer />
       {isSmallScreen ? (
         <Center>

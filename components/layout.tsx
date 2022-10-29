@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import Navbar from 'components/navbar';
 
 export interface LayoutProps {
@@ -8,10 +8,10 @@ export interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ bg, children }) => {
   return (
-    <>
+    <Flex direction="column" minH="100vh" bgImage={bg ?? 'transparent'}>
       <Navbar />
-      <Box bgImage={bg ?? 'transparent'}>{children}</Box>
-    </>
+      <Box>{children}</Box>
+    </Flex>
   );
 };
 

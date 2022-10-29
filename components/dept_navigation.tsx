@@ -41,35 +41,73 @@ const departements = [
 ];
 
 const DeptNavigation = ({
-	selectedDept,
-	setSelectedDept,
+  selectedDept,
+  ascSort,
+  setSelectedDept,
+  setAscSort,
 }: {
-	selectedDept: string;
-	setSelectedDept: (value: string) => void;
+  selectedDept: string;
+  ascSort: boolean;
+  setSelectedDept: (value: string) => void;
+  setAscSort: (value: boolean) => void;
 }) => {
   return (
     <Flex
       flexDirection="row"
       bg="linear-gradient(180deg, #96B29E 23.68%, #F2E1CD 269.74%)"
       py={1}
+      px={3}
       alignItems="center"
       fontFamily="Gurindam"
       overflowX="scroll"
+      justifyContent="space-between"
       sx={{
         '&::-webkit-scrollbar': {
           display: 'none',
         },
       }}
     >
-      {departements.map((departement) => (
-        <Box key="">
-          <Button onClick={() => setSelectedDept(departement.value)} color="#175442" variant="link" mx={5} display="block">
-            {departement.name}
-          </Button>
-        </Box>
-      ))}
-      <IconButton aria-label="sort" variant="ghost" color="#175442" size="lg">
-        <BiFilter />
+      <Box
+        flexDirection="row"
+        display="flex"
+        alignItems="center"
+        maxWidth="80%"
+        overflowX="scroll"
+        css={{
+          '&::-webkit-scrollbar': {
+            width: '0',
+            height: '0',
+          },
+        }}
+      >
+        {departements.map((departement) => (
+          <Box key={departement.name}>
+            <Button
+              onClick={() => setSelectedDept(departement.value)}
+              color="#175442"
+              variant="link"
+              mx={5}
+              display="block"
+            >
+              {departement.name}
+            </Button>
+            {selectedDept === departement.value ? (
+              <Box h={1} marginTop={1} bg="#175442" borderRadius="full" />
+            ) : null}
+          </Box>
+        ))}
+      </Box>
+      <IconButton
+        aria-label="sort"
+        variant="ghost"
+        color="#175442"
+        size="lg"
+        _hover={{ bg: 'transparent' }}
+        transform={ascSort ? 'rotate(0deg)' : 'rotate(180deg)'}
+        transition="transform 0.2s"
+        onClick={() => setAscSort(!ascSort)}
+      >
+        <BiFilter size={35} />
       </IconButton>
     </Flex>
   );
