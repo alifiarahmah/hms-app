@@ -16,8 +16,10 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
-import { User } from '@prisma/client';
+import type { Post, Tag, User } from '@prisma/client';
+import prisma from '@services/prisma';
 import CreateUserModal from 'components/admin/createUserModal';
 import Sidebar from 'components/admin/sidebar';
 import Loading from 'components/loading';
@@ -25,47 +27,53 @@ import useWarning from 'components/warningModal';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const AdminUser = () => {
+// use getstatic props to get all post
+export const getStaticProps = async () => {
+  const postData = await prisma.post.findMany({
+    include: {
+      tags: true,
+    },
+  });
+  return {
+    props: {
+      postData: JSON.parse(JSON.stringify(postData)),
+    },
+  };
+};
+
+type PostWithTags = Post & {
+  tags: Tag[];
+};
+
+const AdminUser = ({ postData }: { postData: PostWithTags[] }) => {
+  postData = postData.map((post) => {
+    post.createdAt = new Date(post.createdAt);
+    return post;
+  });
   const { warning, WarningModal } = useWarning();
   const router = useRouter();
-  const [userData, setUserData] = useState<null | User[]>(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
 
-  const handleDelete = (id: string) => {
-    warning({
-      title: 'Hapus user',
-      description: 'Apakah anda yakin ingin menghapus user ini?',
-      onConfirm: () => {},
+  const handleDeletePost = async (id: string) => {
+    const res = await fetch(`/api/post`, {
+      method: 'DELETE',
+      body: JSON.stringify({ id }),
     });
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/admin/user/${id}`);
-  };
-
-  const handleCloseCreateUser = () => {
-    onClose();
-    router.reload();
-  };
-
-  useEffect(() => {
-    fetch('/api/admin/user')
-      .then((res) => res.json())
-      .then((data) => {
-        setUserData(data.data);
-      })
-      .catch((err) => {
-        router.push('/admin/user');
+    if (res.status === 200) {
+      router.reload();
+    } else {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
       });
-  }, [router]);
-
-  if (!userData) {
-    return <Loading />;
-  }
+    }
+  };
 
   return (
     <Flex flexDir="row" w="100%" bg="primary.100">
-      <CreateUserModal isOpen={isOpen} onClose={handleCloseCreateUser} />
       <WarningModal />
       <Sidebar />
       <Flex w="100%" maxH="100vh" gap={2} px={2} flexDir="column">
@@ -78,7 +86,13 @@ const AdminUser = () => {
                 <SearchIcon />
               </InputRightAddon>
             </InputGroup>
-            <Button onClick={onOpen} mt={2} mr={4} colorScheme="primary" variant="link">
+            <Button
+              onClick={() => router.push('/admin/post/add')}
+              mt={2}
+              mr={4}
+              colorScheme="primary"
+              variant="link"
+            >
               <AddIcon />
             </Button>
           </Flex>
@@ -89,31 +103,35 @@ const AdminUser = () => {
           <Table colorScheme="primary">
             <Thead position="sticky" top="0" bg="primary.100" zIndex={50}>
               <Tr>
-                <Th>NIM</Th>
-                <Th>Name</Th>
-                <Th>Email</Th>
+                <Th>Title</Th>
+                <Th>Tag</Th>
+                <Th>Created At</Th>
                 <Th>Action</Th>
               </Tr>
             </Thead>
             <Tbody>
-              {userData.map((user: User) => (
-                <Tr key={user.id}>
-                  <Td>{user.nim}</Td>
-                  <Td>{user.name}</Td>
-                  <Td>{user.email}</Td>
+              {postData.map((post: PostWithTags) => (
+                <Tr key={post.id}>
+                  <Td>{post.title}</Td>
+                  <Td>{post.tags.map((tag) => tag.name).join(', ')}</Td>
+                  <Td>{post.createdAt.toDateString()}</Td>
                   <Td>
                     <HStack>
                       <IconButton
-                        aria-label={`edit ${user.nim}`}
+                        aria-label="Edit"
                         icon={<EditIcon />}
-                        colorScheme="primary"
-                        onClick={() => handleEdit(user.id)}
+                        onClick={() => router.push(`/admin/post/${post.id}`)}
                       />
                       <IconButton
-                        aria-label={`delete ${user.nim}`}
+                        aria-label="Delete"
                         icon={<DeleteIcon />}
-                        colorScheme="red"
-                        onClick={() => handleDelete(user.id)}
+                        onClick={() => {
+                          warning({
+                            title: 'Delete Post',
+                            description: 'Are you sure you want to delete this post?',
+                            onConfirm: () => handleDeletePost(post.id),
+                          });
+                        }}
                       />
                     </HStack>
                   </Td>

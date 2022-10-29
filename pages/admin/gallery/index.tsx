@@ -32,7 +32,7 @@ import {
   useMediaQuery,
   useToast,
 } from '@chakra-ui/react';
-import { Mading, User } from '@prisma/client';
+import type { Mading, User } from '@prisma/client';
 import CreateUserModal from 'components/admin/createUserModal';
 import Sidebar from 'components/admin/sidebar';
 import Loading from 'components/loading';

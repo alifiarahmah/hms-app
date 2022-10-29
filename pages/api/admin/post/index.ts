@@ -1,7 +1,8 @@
 import { BadRequestError, MethodNotAllowedError } from '@errors/server';
 import ErrorHandler from '@libs/server/errorHandler';
 import serialize from '@libs/server/serialize';
-import { CreateSinglePostSchema } from '@schemas/request';
+import { CreateSinglePostSchema, UpdateSinglePostSchema } from '@schemas/request';
+import { deleteFile } from '@services/drive';
 import prisma from '@services/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -32,7 +33,7 @@ const Post = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     // Connect tags to post
-    if (tags) {
+    if (tags.length > 0) {
       await prisma.post.update({
         where: {
           id: post.id,
@@ -60,20 +61,89 @@ const Post = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
   } else if (req.method === 'DELETE') {
     const { id } = req.body;
     // check if exists
-    let post = await prisma.post.findFirst({
+    const post = await prisma.post.findUnique({
       where: {
         id,
+      },
+      include: {
+        images: true,
       },
     });
 
     if (!post) throw new BadRequestError('Post not found');
 
-    post = await prisma.post.delete({
+    // delete all images
+    for (const image of post.images) {
+      await prisma.imagePost.delete({
+        where: {
+          imageId: image.imageId,
+        },
+      });
+
+      await prisma.image.delete({
+        where: {
+          id: image.imageId,
+        },
+      });
+    }
+
+    const oldpost = await prisma.post.delete({
       where: {
         id,
       },
     });
-    res.status(200).json(serialize('Delete specific post successful', post));
+    res.status(200).json(serialize('Delete specific post successful', oldpost));
+  } else if (req.method === 'PATCH') {
+    const { id, title, content, tags, images } = UpdateSinglePostSchema.parse(req.body);
+
+    // check if exists
+    const post = await prisma.post.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        images: true,
+      },
+    });
+
+    if (!post) throw new BadRequestError('Post not found');
+
+    // get all old images that is not in the new images
+    const oldImages = images
+      ? post.images.filter((image) => !images.includes(image.imageId))
+      : post.images;
+
+    // delete all old images
+    for (const image of oldImages) {
+      await prisma.imagePost.delete({
+        where: {
+          imageId: image.imageId,
+        },
+      });
+
+      await prisma.image.delete({
+        where: {
+          id: image.imageId,
+        },
+      });
+
+      await deleteFile(image.imageId);
+    }
+
+    // update post
+    const newPost = await prisma.post.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        content,
+        tags: {
+          connect: tags.map((tag) => ({ name: tag })),
+        },
+      },
+    });
+    res.status(200).json(serialize('Delete specific post successful', newPost));
   } else {
     throw new MethodNotAllowedError();
   }

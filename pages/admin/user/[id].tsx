@@ -13,7 +13,7 @@ import {
   useToast,
   VStack,
 } from '@chakra-ui/react';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import Loading from 'components/loading';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

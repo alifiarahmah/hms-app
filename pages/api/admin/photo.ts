@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { BuildFileMiddleware, BuildRoute } from '@libs/server/nextConnect';
 import { AsyncRoute } from '@libs/server/asyncWrapper';
 import { UploadPhotoSchema } from '@schemas/request';
-import { uploadFile } from '@services/drive';
+import { deleteFile, uploadFile } from '@services/drive';
 
 const PhotoRoute = BuildRoute();
 PhotoRoute.post(
@@ -36,6 +36,30 @@ PhotoRoute.post(
       });
 
       res.json(serialize('Upload photo success', photo));
+    }
+  )
+);
+
+// delete route
+PhotoRoute.delete(
+  BuildFileMiddleware('single'),
+  AsyncRoute(
+    async (
+      req: NextApiRequest & {
+        file: Express.Multer.File;
+      },
+      res: NextApiResponse
+    ) => {
+      const { id } = req.body;
+      const photo = await prisma.image.delete({
+        where: {
+          id,
+        },
+      });
+
+      await deleteFile(id);
+
+      res.json(serialize('Delete photo success', photo));
     }
   )
 );

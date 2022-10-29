@@ -60,8 +60,18 @@ export type EditProfileReqType = z.infer<typeof EditProfileSchema>;
 export const CreateSinglePostSchema = z.object({
   title: z.string(),
   content: z.string(),
-  tags: z.array(z.string()).optional(),
-  images: z.array(z.string()).optional(),
+  tags: z.array(z.string()),
+  images: z.array(z.string()),
 });
 
 export type CreateProfileReqType = z.infer<typeof CreateSinglePostSchema>;
+
+export const UpdateSinglePostSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  content: z.string(),
+  tags: z.array(z.string()),
+  images: z.array(z.string()),
+});
+
+export type UpdateSinglePostReqType = z.infer<typeof UpdateSinglePostSchema>;

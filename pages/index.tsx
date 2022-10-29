@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   Center,
 } from '@chakra-ui/react';
-import { CalendarEvent, Image as ImageType, ImagePost, Mading, Post } from '@prisma/client';
+import type { CalendarEvent, Image as ImageType, ImagePost, Mading, Post } from '@prisma/client';
 import { InfoCard, MadingCard, TimelineCard } from 'components/cards';
 import Link from 'components/link';
 import Navbar from 'components/navbar';

@@ -27,7 +27,7 @@ model Tag {
 
 model ImagePost {
   postId  String
-  imageId String
+  imageId String @unique
   post    Post   @relation(fields: [postId], references: [id])
   image   Image  @relation(fields: [imageId], references: [id])
 
