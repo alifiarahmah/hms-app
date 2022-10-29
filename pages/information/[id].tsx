@@ -12,17 +12,11 @@ moment.locale('id');
 export const Information = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [post, setPost] = useState<IPost>({
-    id: '',
-    title: '',
-    content: '',
-    createdAt: '',
-    updatedAt: '',
-  });
+  const [post, setPost] = useState<IPost>({} as IPost);
   const [newest, setNewest] = useState<IPost[]>([]);
 
   useEffect(() => {
-    fetch(`/api/user/post/${id}`, {
+    fetch(`/api/user/post/id/${id}`, {
       method: 'GET',
     }).then((res) => {
       res.json().then(({ data }) => {
