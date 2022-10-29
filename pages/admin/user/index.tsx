@@ -17,7 +17,7 @@ import {
   Tr,
   useDisclosure,
 } from '@chakra-ui/react';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import CreateUserModal from 'components/admin/createUserModal';
 import Sidebar from 'components/admin/sidebar';
 import Loading from 'components/loading';

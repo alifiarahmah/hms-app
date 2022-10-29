@@ -2,7 +2,7 @@ import { CalendarCache } from '@libs/cache';
 import { parseRRule } from '@libs/calendar';
 import ErrorHandler from '@libs/server/errorHandler';
 import serialize from '@libs/server/serialize';
-import { CalendarEvent } from '@prisma/client';
+import type { CalendarEvent } from '@prisma/client';
 import prisma from '@services/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 

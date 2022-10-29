@@ -1,7 +1,7 @@
 import serialize from '@libs/server/serialize';
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { CalendarEvent, Prisma } from '@prisma/client';
+import type { CalendarEvent, Prisma } from '@prisma/client';
 import prisma from '@services/prisma';
 import ErrorHandler from '@libs/server/errorHandler';
 import { MethodNotAllowedError } from '@errors/server';

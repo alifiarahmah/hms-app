@@ -1,7 +1,7 @@
 import { BadRequestError } from '@errors/server';
 import ErrorHandler from '@libs/server/errorHandler';
 import serialize from '@libs/server/serialize';
-import { UserSubscription } from '@prisma/client';
+import type { UserSubscription } from '@prisma/client';
 import prisma from '@services/prisma';
 import { MD5 } from 'crypto-js';
 import { NextApiRequest, NextApiResponse } from 'next';

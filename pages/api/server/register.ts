@@ -1,5 +1,5 @@
 import { InternalServerError } from '@errors/server';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import prisma from '@services/prisma';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';

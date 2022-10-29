@@ -4,7 +4,7 @@ import { BuildFileMiddleware, BuildRoute } from '@libs/server/nextConnect';
 import serialize from '@libs/server/serialize';
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { CalendarEvent, Prisma } from '@prisma/client';
+import type { CalendarEvent } from '@prisma/client';
 import prisma from '@services/prisma';
 import { CalendarCache } from '@libs/cache';
 import { BadRequestError, InternalServerError } from '@errors/server';

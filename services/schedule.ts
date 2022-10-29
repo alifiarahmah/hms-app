@@ -1,5 +1,5 @@
 import { pushNotification } from '@libs/notifications';
-import { CalendarEvent } from '@prisma/client';
+import type { CalendarEvent } from '@prisma/client';
 import schedule, { Job } from 'node-schedule';
 import prisma from './prisma';
 
