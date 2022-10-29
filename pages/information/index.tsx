@@ -24,6 +24,26 @@ export const Information = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (selectedDept !== 'all') {
+      fetch(`/api/user/post/tag/${selectedDept}`, {
+        method: 'GET',
+      }).then((res) => {
+        res.json().then(({ data }) => {
+          setPosts(data);
+        });
+      });
+    } else {
+      fetch('/api/user/post', {
+        method: 'GET',
+      }).then((res) => {
+        res.json().then(({ data }) => {
+          setPosts(data);
+        });
+      });
+    }
+  }, [selectedDept])
+
   return (
     <Layout bg="/images/bg_krem.png">
       <DeptNavigation
