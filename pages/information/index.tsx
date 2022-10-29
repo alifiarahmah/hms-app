@@ -3,50 +3,11 @@ import DeptNavigation from 'components/dept_navigation';
 import Layout from 'components/layout';
 import Link from 'components/link';
 import moment from 'moment';
-import 'moment/locale/id'
+import 'moment/locale/id';
 import { useEffect, useState } from 'react';
 import { IPost } from 'types/post';
 
 moment.locale('id');
-
-const departements = [
-  {
-    name: 'All',
-    value: 'all',
-  },
-  {
-    name: 'Kesekjenan',
-    value: 'kesekjenan',
-  },
-  {
-    name: 'Medkominfo',
-    value: 'medkominfo',
-  },
-  {
-    name: 'Internal',
-    value: 'internal',
-  },
-  {
-    name: 'Kemasyarakatan',
-    value: 'kemasyarakatan',
-  },
-  {
-    name: 'Keprofesian',
-    value: 'keprofesian',
-  },
-  {
-    name: 'Organization Development',
-    value: 'organization-development',
-  },
-  {
-    name: 'ICEE',
-    value: 'icee',
-  },
-  {
-    name: 'SIBADES',
-    value: 'sibades',
-  },
-];
 
 export const Information = () => {
   const [selectedDept, setSelectedDept] = useState('all');
@@ -75,11 +36,20 @@ export const Information = () => {
         {posts.map((post) => (
           <Link key={post.id} href={`/information/${post.id}`}>
             <Box bg="white" color="#1F1B1F">
-              <Image src="http://source.unsplash.com/random/300x200" alt="" h="200px" />
+              <Image
+                h="200px"
+                w="100%"
+                src={
+                  post.images.length > 0
+                    ? `https://drive.google.com/uc?export=view&id=${post.images[0].imageId}`
+                    : 'https://images.unsplash.com/photo-1587334274328-64186a80aeee?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=200&ixid=MnwxfDB8MXxyYW5kb218MHx8Zmxvd2VyfHx8fHx8MTY2NzA1MTg2NA&ixlib=rb-4.0.3&w=300'
+                }
+                objectFit={post.images.length > 0 ? 'cover' : 'contain'}
+                objectPosition="center"
+                alt={post.title}
+              />
               <Box p={2}>
-                <Text fontSize="sm">
-                  {moment(post.createdAt).format('DD MMMM YYYY')}
-                </Text>
+                <Text fontSize="sm">{moment(post.createdAt).format('DD MMMM YYYY')}</Text>
                 <Text>{post.title}</Text>
               </Box>
             </Box>

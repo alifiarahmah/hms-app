@@ -6,5 +6,6 @@ export interface IPost {
   content: string;
   createdAt: string;
   updatedAt: string;
+  images: IImage[];
   tags: ITag[];
 }

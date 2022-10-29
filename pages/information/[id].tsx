@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import Layout from 'components/layout';
 import Link from 'components/link';
 import moment from 'moment';
@@ -36,6 +36,9 @@ export const Information = () => {
     });
   }, []);
 
+  if (!post) {
+    return <Layout>No post</Layout>;
+  }
   return (
     <Layout bg="/images/bg_pattern.png">
       <Flex minH="100vh" flexDirection={{ base: 'column', lg: 'row' }}>
@@ -58,7 +61,17 @@ export const Information = () => {
           {newest.map((newPost) => (
             <Link key={newPost.id} href={`/information/${newPost.id}`}>
               <Flex bg="white" color="#1F1B1F" my={5} overflowX="hidden">
-                {/* <Image src="http://source.unsplash.com/random/100x70" alt="" /> */}
+                <Image
+                  src={
+                    newPost.images.length > 0
+                      ? `https://drive.google.com/uc?export=view&id=${newPost.images[0].imageId}`
+                      : 'https://images.unsplash.com/photo-1587334274328-64186a80aeee?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=100&ixid=MnwxfDB8MXxyYW5kb218MHx8Zmxvd2VyfHx8fHx8MTY2NzA1MTg2NA&ixlib=rb-4.0.3&w=70'
+                  }
+                  w="70px"
+                  h="100px"
+                  objectFit="cover"
+                  alt={newPost.title}
+                />
                 <Box p={2}>
                   <Text fontSize="sm">{moment(newPost.createdAt).fromNow()}</Text>
                   <Text noOfLines={1}>{newPost.title}</Text>
