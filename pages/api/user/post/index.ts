@@ -7,6 +7,10 @@ const Post = ErrorHandler(async (req, res) => {
     const posts = await prisma.post.findMany({
       include: {
         images: true,
+        tags: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
     res.status(200).json(serialize('Get posts successful', posts));

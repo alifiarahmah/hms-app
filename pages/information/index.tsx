@@ -2,7 +2,12 @@ import { Box, Image, SimpleGrid, Text } from '@chakra-ui/react';
 import DeptNavigation from 'components/dept_navigation';
 import Layout from 'components/layout';
 import Link from 'components/link';
-import { useState } from 'react';
+import moment from 'moment';
+import 'moment/locale/id'
+import { useEffect, useState } from 'react';
+import { IPost } from 'types/post';
+
+moment.locale('id');
 
 const departements = [
   {
@@ -46,6 +51,17 @@ const departements = [
 export const Information = () => {
   const [selectedDept, setSelectedDept] = useState('all');
   const [ascSort, setAscSort] = useState(false);
+  const [posts, setPosts] = useState<IPost[]>([]);
+
+  useEffect(() => {
+    fetch('/api/user/post', {
+      method: 'GET',
+    }).then((res) => {
+      res.json().then(({ data }) => {
+        setPosts(data);
+      });
+    });
+  }, []);
 
   return (
     <Layout bg="/images/bg_krem.png">
@@ -56,13 +72,15 @@ export const Information = () => {
         setAscSort={setAscSort}
       />
       <SimpleGrid p={7} columns={{ base: 1, sm: 2, md: 3, lg: 4 }} rowGap={5} columnGap={5}>
-        {Array.from({ length: 20 }).map((_, i) => (
-          <Link key={i} href={`/information/${i}`}>
+        {posts.map((post) => (
+          <Link key={post.id} href={`/information/${post.id}`}>
             <Box bg="white" color="#1F1B1F">
               <Image src="http://source.unsplash.com/random/300x200" alt="" h="200px" />
               <Box p={2}>
-                <Text fontSize="sm">dd mm yy</Text>
-                <Text>{selectedDept}</Text>
+                <Text fontSize="sm">
+                  {moment(post.createdAt).format('DD MMMM YYYY')}
+                </Text>
+                <Text>{post.title}</Text>
               </Box>
             </Box>
           </Link>
