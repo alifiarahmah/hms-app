@@ -71,7 +71,6 @@ const DeptNavigation = ({
         flexDirection="row"
         display="flex"
         alignItems="center"
-        maxWidth="80%"
         overflowX="scroll"
         css={{
           '&::-webkit-scrollbar': {
