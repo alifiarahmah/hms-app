@@ -24,6 +24,14 @@ import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import Link from './link';
 
+const navigation = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Calendar', href: '/calendar', status: 'authenticated' },
+  { label: 'Information', href: '/information' },
+  { label: 'Mading', href: '/mading' },
+];
+
 const Navbar = () => {
   const [isSmallScreen] = useMediaQuery('(max-width: 900px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,23 +59,15 @@ const Navbar = () => {
             <DrawerBody>
               <Flex textAlign={'center'} gap={8} flexDir="column">
                 <Divider />
-                <Link href="/" fontWeight={'bold'}>
-                  Home
-                </Link>
-                <Link href="/about" fontWeight={'bold'}>
-                  About
-                </Link>
-                {status === 'authenticated' && (
-                  <Link href="/calendar" fontWeight={'bold'}>
-                    Calendar
-                  </Link>
-                )}
-                <Link href="/information" fontWeight={'bold'}>
-                  Information
-                </Link>
-                <Link href="/mading" fontWeight={'bold'}>
-                  Mading
-                </Link>
+                {navigation.map((item) => {
+                  return (
+                    (!item.status || item.status == status) && (
+                      <Link href={item.href} key={item.label} fontWeight="bold">
+                        {item.label}
+                      </Link>
+                    )
+                  );
+                })}
                 <Divider />
                 {status === 'authenticated' ? (
                   <Button
@@ -142,33 +142,27 @@ const Navbar = () => {
         </Center>
       ) : (
         <>
-          <Center>
-            <Link href="/" color="primary.100">
-              Home
-            </Link>
-          </Center>
-          <Center>
-            <Link href="/about" color="primary.100">
-              About
-            </Link>
-          </Center>
-          {status === 'authenticated' ? (
-            <Center>
-              <Link href="/calendar" color="primary.100">
-                Calendar
-              </Link>
-            </Center>
-          ) : null}
-          <Center>
-            <Link href="/information" color="primary.100">
-              Information
-            </Link>
-          </Center>
-          <Center>
-            <Link href="/mading" color="primary.100">
-              Mading
-            </Link>
-          </Center>
+          {navigation.map((item) => {
+            const isActive =
+              item.href !== '/'
+                ? router.pathname.includes(item.href)
+                : router.pathname === item.href;
+            return (
+              (!item.status || item.status == status) && (
+                <Center>
+                  <Link
+                    href={item.href}
+                    key={item.label}
+                    color="primary.100"
+                    fontWeight={isActive ? 'bold' : 'normal'}
+                    _hover={{ opacity: !isActive ? 0.7 : 1 }}
+                  >
+                    {item.label}
+                  </Link>
+                </Center>
+              )
+            );
+          })}
           <Center py={3}>
             <Divider orientation="vertical" />
           </Center>
