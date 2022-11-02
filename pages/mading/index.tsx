@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Box,
+  Flex,
   Heading,
   HStack,
   Image,
@@ -14,6 +15,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { MadingCard } from 'components/cards';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import DeptNavigation from 'components/dept_navigation';
 import Layout from 'components/layout';
 import Loading from 'components/loading';
@@ -32,11 +34,20 @@ export const Mading = () => {
   const [ascSort, setAscSort] = useState(false);
   const [fullMading, setFullMading] = useState<Mading[]>([]);
   const [mading, setMading] = useState<Mading[]>([]);
+  const [selectedMading, setSelectedMading] = useState<Mading>();
+  const [idx, setIdx] = useState<number>(0);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleOpen = (id: string) => {
-    setSelectedPostId(id);
+  const handleOpen = (item: Mading) => {
+    setSelectedMading(item);
+    setIdx(fullMading.findIndex((i) => i.id === item.id));
     onOpen();
+  };
+
+  const slideMading = (idxInc: number) => {
+    const curIdx = idx + idxInc < 0 ? mading.length - 1 : (idx + idxInc) % mading.length;
+    setIdx(curIdx);
+    setSelectedMading(mading[curIdx]);
   };
 
   useEffect(() => {
@@ -58,6 +69,7 @@ export const Mading = () => {
         fullMading.filter((item) => item.tagName.toLowerCase() == selectedDept.toLowerCase())
       );
     }
+    setIdx(0);
   }, [selectedDept]);
 
   useEffect(() => {
@@ -94,33 +106,69 @@ export const Mading = () => {
             <MadingCard
               key={item.id}
               image={`https://drive.google.com/uc?export=view&id=${item.imageId}`}
-              onClick={() => handleOpen(item.id)}
+              onClick={() => handleOpen(item)}
             />
           ))}
         </SimpleGrid>
       </Layout>
 
-      {/* TODO: make modal bigger */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={{ base: 'xl', md: '2xl', lg: '3xl', xl: '4xl' }}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalBody p={0} w="fit-content" alignSelf="center">
-            <HStack bgImage="/images/bg_pink.png">
+          <ModalBody p={0} position="relative">
+            <Box
+              display={{ base: 'none', lg: 'block' }}
+              position="absolute"
+              top="50%"
+              left="0px"
+              transform="translate(-200%, -50%)"
+              _hover={{ opacity: 0.65 }}
+              cursor="pointer"
+              onClick={() => slideMading(-1)}
+            >
+              <FaChevronLeft size={50} color="#F2E1CD" />
+            </Box>
+            <Box
+              display={{ base: 'none', lg: 'block' }}
+              position="absolute"
+              top="50%"
+              right="0px"
+              transform="translate(200%, -50%)"
+              _hover={{ opacity: 0.65 }}
+              cursor="pointer"
+              onClick={() => slideMading(1)}
+            >
+              <FaChevronRight size={50} color="#F2E1CD" />
+            </Box>
+            <Flex flexDirection="row" bgImage="/images/bg_pink.png">
               <Box
-                h="80vh"
-                w="1000px"
-                bgImage="https://via.placeholder.com/1920x1080"
-                bgSize="cover"
-                bgPosition="center"
-              />
-              <Box m={10} ml={5} w="500px">
-                <Text color="#1F1B1F">dd mm yy</Text>
-                <Heading color="#1F1B1F">Title {selectedPostId}</Heading>
+                w={{ base: '100%', lg: '75%' }}
+                h={{ base: '400px', lg: '500px' }}
+                overflow="hidden"
+                alignSelf="center"
+              >
+                <Image
+                  src={`https://drive.google.com/uc?export=view&id=${selectedMading?.imageId}`}
+                  alt="mading"
+                  w="100%"
+                  h="100%"
+                  objectFit="cover"
+                />
+              </Box>
+              <Box m={10} ml={5} display={{ base: 'none', lg: 'unset' }}>
+                <Heading color="#1F1B1F" flexWrap="wrap">
+                  {selectedMading?.title}
+                </Heading>
                 <Text color="#1F1B1F" mt={3}>
-                  Content
+                  {selectedMading?.tagName}
                 </Text>
               </Box>
-            </HStack>
+            </Flex>
           </ModalBody>
         </ModalContent>
       </Modal>
