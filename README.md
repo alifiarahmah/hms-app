@@ -1,42 +1,32 @@
-# next-pwa - web push example
+# HMS App
 
-[TOC]
+Sebuah progressive web app untuk mengelola mading, events, dan informasi lain di HMS.
 
-This example demonstrates how to use `next-pwa` plugin to implement web push with custom worker.
+Aplikasi ini dapat diakses di [hmsitb.one/](https://hmsitb.one/) dan dapat diinstall di perangkat mobile ataupun desktop.
 
-**NOTE**
+Fitur aplikasi:
+- Homepage
 
-In real world, you may want to send the subscription data to your server once user agree to subscribe web push. Store the data associate with the user. So that you can initiate a web push notification from your server to the specific users.
+- About page
+	Berisi informasi terkait organisasi HMS ITB, organogram, serta contact person.
+- Informasi
+	Berisi informasi dari berbagai departemen yang dapat dikelola oleh admin.
+- Kalender
+	Berisi informasi mengenai event yang akan datang. Event dapat dikelola oleh admin.
+- Mading
+	Berisi informasi gambar dari berbagai departemen yang dapat dikelola oleh admin.
+- Admin panel (CMS)
+	Berisi pengelolaan informasi dalam aplikasi, seperti pengelolaan user, informasi, event, dan mading.
 
-## Usage
+## Instalasi aplikasi mobile
 
-[![Open in Gitpod](https://img.shields.io/badge/Open%20In-Gitpod.io-%231966D2?style=for-the-badge&logo=gitpod)](https://gitpod.io/#https://github.com/shadowwalker/next-pwa/)
+1. Buka halaman [hmsitb.one](https://hmsitb.one) di browser Chrome
+2. Klik tombol "Add to Home Screen" yang muncul di pojok kanan atas
+3. Aplikasi akan terinstall di mobile dan bisa diakses melalui menu aplikasi. Ketika login menuju aplikasi, notifikasi akan terpasang untuk perangkat dan akan muncul ketika ada event baru dari kalender HMS.
 
-```bash
-cd examples/web-push
-yarn install
-yarn vapid
-```
 
-Create a `.env` file, and put the public key generated from the previous steps
+## Instalasi aplikasi desktop
 
-```
-WEB_PUSH_EMAIL=user@example.com
-WEB_PUSH_PRIVATE_KEY=<vapid-private-key>
-NEXT_PUBLIC_WEB_PUSH_PUBLIC_KEY=<vapid-public-key>
-```
-
-Build and start
-
-```bash
-yarn build
-yarn start
-```
-
-## Recommend `.gitignore`
-
-```
-**/public/workbox-*.js
-**/public/sw.js
-**/public/worker-*.js
-```
+1. Buka halaman [hmsitb.one](https://hmsitb.one) di browser Chrome
+2. Klik tombol "App available" yang muncul di pojok kanan atas (dekat dengan URL bar pada browser, atau Apps pada Microsoft Edge)
+3. Aplikasi akan terinstall di desktop dan bisa diakses melalui menu aplikasi. Ketika login menuju aplikasi, notifikasi akan terpasang untuk perangkat dan akan muncul ketika ada event baru dari kalender HMS.
