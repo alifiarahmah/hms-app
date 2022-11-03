@@ -27,6 +27,6 @@ Fitur aplikasi:
 
 ## Instalasi aplikasi desktop
 
-1. Buka halaman [hmsitb.one](https://hmsitb.one) di browser Chrome
+1. Buka halaman [hmsitb.one](https://hmsitb.one) di browser Chrome-based (Chrome, Chromium, Microsoft Edge, dll)
 2. Klik tombol "App available" yang muncul di pojok kanan atas (dekat dengan URL bar pada browser, atau Apps pada Microsoft Edge)
 3. Aplikasi akan terinstall di desktop dan bisa diakses melalui menu aplikasi. Ketika login menuju aplikasi, notifikasi akan terpasang untuk perangkat dan akan muncul ketika ada event baru dari kalender HMS.
