@@ -59,7 +59,7 @@ const Post = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
 
     res.status(200).json(serialize('Create specific post successful', post));
   } else if (req.method === 'DELETE') {
-    const { id } = req.body;
+    const { id } = JSON.parse(req.body);
     // check if exists
     const post = await prisma.post.findUnique({
       where: {
@@ -143,7 +143,7 @@ const Post = ErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
     });
-    res.status(200).json(serialize('Delete specific post successful', newPost));
+    res.status(200).json(serialize('Update specific post successful', newPost));
   } else {
     throw new MethodNotAllowedError();
   }

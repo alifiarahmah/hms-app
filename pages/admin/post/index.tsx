@@ -55,7 +55,7 @@ const AdminUser = ({ postData }: { postData: PostWithTags[] }) => {
   const toast = useToast();
 
   const handleDeletePost = async (id: string) => {
-    const res = await fetch(`/api/post`, {
+    const res = await fetch(`/api/admin/post`, {
       method: 'DELETE',
       body: JSON.stringify({ id }),
     });
