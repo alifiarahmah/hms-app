@@ -6,7 +6,7 @@ Aplikasi ini dapat diakses di [hmsitb.one/](https://hmsitb.one/) dan dapat diins
 
 Fitur aplikasi:
 - Homepage
-
+	Halaman utama. Berisi beberapa informasi dan data mading terbaru dari HMS, serta event yang akan datang.
 - About page
 	Berisi informasi terkait organisasi HMS ITB, organogram, serta contact person.
 - Informasi
